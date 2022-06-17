@@ -1,7 +1,15 @@
+/*
+cmd창 실행
+sqlplus
+system/1111
+CREATE USER p04 IDENTIFIED BY 1111;
+grant dba to p04;
+*/
+
 CREATE TABLE Account(
 	accno NUMBER PRIMARY KEY,
 	name varchar2(50) NOT NULL,
-	id varchar2(15) NOT NULL,
+	id varchar2(15) NOT NULL UNIQUE,
 	pw varchar2(20) NOT NULL,
 	birthday DATE NOT NULL,
 	mnum varchar2(14) NOT NULL, -- 휴대폰 번호
@@ -34,6 +42,7 @@ acc_seq.nextval, '화성인', 'aaaabbbb123', '321321',
 TO_DATE('19980513','YYYYMMDD'),'010-5126-4634',NULL,
 'asdasd123@naver.com','경기도 성남시 중원구 성남동 3128',sysdate,0
 );
+
 
 
 /*
