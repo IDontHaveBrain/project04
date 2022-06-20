@@ -1,0 +1,27 @@
+# JAVA
+import project04.util.*;
+inputCheck.isEmpty("asd asd"); // 공백이 있음으로 true 반환.
+
+// jsp 페이지에서 사용하려면 아래와 같은 형식으로 사용.
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"
+	import="project04.util.*"
+	%>
+
+
+# javascript
+js 공통모듈 사용법 -
+	<head> 태그안에 사용하려는 공통모듈 불러오기, 이후 해당 페이지 script 태그 안에서 어디서든 사용가능.
+	// 불러오는 방법 - 사용하려는 공통모듈 아래와 같은 형식으로 헤드태그 안에 cv
+	<script type="text/javascript" src="<%=path%>/util/check.js"></script>
+	<script type="text/javascript" src="<%=path%>/util/cookie.js"></script>
+	
+	isEmpty(value) - null, none 빈값체크. true 반환시 데이터가 비어있는 상태.
+	haveBlank(value) - 문자열에 공백이 있는지 확인. true 반환시 데이터에 공백문자가 있는상태.
+	
+	setCookie('키', '값', 기간) - 페이지 이동해도 저장(유지)되는 데이터 설정. (클라이언트에서 변조가능 민감한 개인정보, 서버에서 처리되는 데이터는 쓰면안됨.)
+	ex) 로그인에서 아이디 저장하는 경우(다시 로그인시 패스워드만 다시 입력하기 위해)
+		setCookie('saveId', 'asdasd123', 2); // saveId=asdasd123 , 2일간 저장됨.
+		
+	getCookie('키') - 저장된 쿠키값(데이터)를 가져오려는 경우.
+	ex) var cookie_id = getCookie('saveId'); // 키에 매칭되는 값 불러와짐.

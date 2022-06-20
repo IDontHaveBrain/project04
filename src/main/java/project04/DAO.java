@@ -36,8 +36,7 @@ public class DAO {
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {
-				if(rs.getString("id").equals(pw))
-					result = 1;
+				result = 1;
 			}
 			
 			rs.close();
@@ -78,13 +77,75 @@ public class DAO {
 		return result; // 예외발생
 	}
 
-	public Account getAccount(int accno) {
+	public Account getAccountNo(int accno) {
 		Account acc = null;
 		try {
 			setConn();
 			String sql = "SELECT * FROM ACCOUNT WHERE accno = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, accno);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				acc = new Account(
+						rs.getInt("accno"),
+						rs.getString("name"),
+						rs.getString("id"),
+						rs.getString("pw"),
+						rs.getDate("birthday"),
+						rs.getString("mnum"),
+						rs.getString("pnum"),
+						rs.getString("email"),
+						rs.getString("address"),
+						rs.getDate("regdate"),
+						rs.getInt("admin"));
+			}
+			
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("일반 예외 : "+e.getMessage());
+		}finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return acc;
+	}
+
+	public Account getAccountId(int id) {
+		Account acc = null;
+		try {
+			setConn();
+			String sql = "SELECT * FROM ACCOUNT WHERE id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {
