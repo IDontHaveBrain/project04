@@ -12,5 +12,5 @@ DAO 메서드 네이밍 규칙(이미 작성하신건 그대로 쓰시고, 새�
 JAVA 공통 모듈은 project04.util 패키지안에 작성.
 
 # WEB
-javascript 공통 모듈은 src/main/webapp/comp 폴더안에 생성.
+javascript 공통 모듈은 src/main/webapp/util 폴더안에 생성.
 불러오는 용도에 css 파일 생성시 src/main/webapp/css 폴더안에 생성.

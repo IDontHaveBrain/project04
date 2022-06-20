@@ -11,9 +11,9 @@ function isEmpty(arg){
 }
 
 // 문자열에 공백이 있는지 체크.
-function blankCheck(arg){
+function haveBlank(arg){
 	var pattern = /\s/g; // 스페이스, 탭 체크.
-	if(arg.value.match(pattern)){
+	if(arg.match(pattern)){
 		return true;
 	}
 	return false;
