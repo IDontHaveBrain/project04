@@ -11,5 +11,4 @@ public class main {
 		Account a1 = dao.getAccount(1);
 		System.out.println(a1.getBirthday());
 	}
-
 }

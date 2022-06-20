@@ -1,0 +1,16 @@
+# JAVA
+VO 클래스는 project04.vo 패키지안에 테이블명 그대로 클래스 생성.
+
+DAO 메서드 네이밍 규칙(이미 작성하신건 그대로 쓰시고, 새로 작성할 dao메서드는 통일하면 좋을거 같아요.)
+	조회 - get테이블명@@@
+	해당테이블 모든 데이터 조회 - get테이블명List
+	추가 - insert테이블명@@@
+	수정 - update테이블명@@@
+	삭제 - delete테이블명@@@
+	(@@@는 생략 or 알아보기 쉽게 개인이 결정)
+	
+JAVA 공통 모듈은 project04.util 패키지안에 작성.
+
+# WEB
+javascript 공통 모듈은 src/main/webapp/comp 폴더안에 생성.
+불러오는 용도에 css 파일 생성시 src/main/webapp/css 폴더안에 생성.
