@@ -24,7 +24,9 @@ public class DAO {
 		}
 	}
 
+	// 1 로그인 성공, 0 로그인 실패
 	public int login(String id, String pw) {
+		int result = 0;
 		try {
 			setConn();
 			String sql = "SELECT * FROM ACCOUNT WHERE id = ? AND pw = ?";
@@ -35,9 +37,8 @@ public class DAO {
 			
 			if (rs.next()) {
 				if(rs.getString("id").equals(pw))
-					return 1; // 로그인 성공
-			} else
-				return 0; // 로그인 실패
+					result = 1;
+			}
 			
 			rs.close();
 			pstmt.close();
@@ -74,7 +75,7 @@ public class DAO {
 				}
 			}
 		}
-		return -1; // 예외발생
+		return result; // 예외발생
 	}
 
 	public Account getAccount(int accno) {
