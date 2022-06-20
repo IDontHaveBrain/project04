@@ -24,6 +24,59 @@ public class DAO {
 		}
 	}
 
+	public int login(String id, String pw) {
+		try {
+			setConn();
+			String sql = "SELECT * FROM ACCOUNT WHERE id = ? AND pw = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				if(rs.getString("id").equals(pw))
+					return 1; // 로그인 성공
+			} else
+				return 0; // 로그인 실패
+			
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("일반 예외 : "+e.getMessage());
+		}finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return -1; // 예외발생
+	}
+
 	public Account getAccount(int accno) {
 		Account acc = null;
 		try {
