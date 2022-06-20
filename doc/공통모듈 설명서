@@ -2,11 +2,14 @@
 import project04.util.*;
 inputCheck.isEmpty("asd asd"); // 공백이 있음으로 true 반환.
 
-// jsp 페이지에서 사용하려면 아래와 같은 형식으로 사용.
+// jsp 페이지에서 사용하려면 아래와 같이 임포트후 위와 동일하게 사용.
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 	import="project04.util.*"
 	%>
+<%
+	inputCheck.isEmpty("asd asd");
+%?
 
 
 # javascript
@@ -22,6 +25,8 @@ js 공통모듈 사용법 -
 	setCookie('키', '값', 기간) - 페이지 이동해도 저장(유지)되는 데이터 설정. (클라이언트에서 변조가능 민감한 개인정보, 서버에서 처리되는 데이터는 쓰면안됨.)
 	ex) 로그인에서 아이디 저장하는 경우(다시 로그인시 패스워드만 다시 입력하기 위해)
 		setCookie('saveId', 'asdasd123', 2); // saveId=asdasd123 , 2일간 저장됨.
+		쿠키값을 삭제하려는 경우
+		setCookie('saveId', 0, -1); // 기간을 -1 설정하면 기간 만료로 삭제됨.
 		
 	getCookie('키') - 저장된 쿠키값(데이터)를 가져오려는 경우.
 	ex) var cookie_id = getCookie('saveId'); // 키에 매칭되는 값 불러와짐.
