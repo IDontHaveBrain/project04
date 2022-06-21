@@ -139,13 +139,13 @@ public class DAO {
 		return acc;
 	}
 
-	public Account getAccountId(int id) {
+	public Account getAccountId(String id) {
 		Account acc = null;
 		try {
 			setConn();
 			String sql = "SELECT * FROM ACCOUNT WHERE id = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, id);
+			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {
