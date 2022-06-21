@@ -7,7 +7,7 @@ public class main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		// test dgdfgsdgsgsdgdsf testss
+		// test dgdfgsdgsgsdgdsf testssssss
 		DAO dao = new DAO();
 		Account a1 = dao.getAccountNo(1);
 		System.out.println(a1.getBirthday());
