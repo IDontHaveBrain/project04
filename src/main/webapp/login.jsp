@@ -27,7 +27,7 @@ if(!(inputCheck.isEmpty(id) || inputCheck.isEmpty(pw))){
 		session.setMaxInactiveInterval(60*10); // 로그인 세션 10분간 유지.
 		%>
 		<script type="text/javascript">
-		alert("로그인 성공");
+		alert("<%=id%>님 "+"로그인 성공");
 		location.href = "main.jsp";
 		</script>
 <%		
