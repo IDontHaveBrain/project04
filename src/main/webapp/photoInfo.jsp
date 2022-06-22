@@ -11,7 +11,7 @@ String path = request.getContextPath();
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>포토갤러리 상세보기</title>
 	<link href="<%=path %>\css\photoInfoCss.css" rel="stylesheet">
 	<style>
 
