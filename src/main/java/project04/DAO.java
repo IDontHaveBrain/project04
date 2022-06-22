@@ -209,27 +209,27 @@ public class DAO {
 			setConn();
 			con.setAutoCommit(false);
 			String sql = "INSERT INTO Account VALUES("
-					+ "	acc_seq.nextval," //기본키 accno
-					+ "	?," // 이름
-					+ "	?," // id
-					+ "	?," // pw
-					+ "	?," // 생년월일
-					+ "	?," // 휴대폰번호
-					+ " ?," // 집전화번호
-					+ " ?," // 이메일
-					+ " ?," // 주소
-					+ " sysdate," // 가입일
-					+ " ?)"; // 권한 0 일반, 1 관리자
+					+ "acc_seq.nextval, " //기본키 accno
+					+ "?, " // 이름
+					+ "?, " // id
+					+ "?, " // pw
+					+ "TO_DATE(?,'YYYYMMDD'), " // 생년월일
+					+ "?, " // 휴대폰번호
+					+ "?, " // 집전화번호
+					+ "?, " // 이메일
+					+ "?, " // 주소
+					+ "sysdate, " // 가입일
+					+ "?)"; // 권한 0 일반, 1 관리자
 			
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, acc.getId());
-			pstmt.setString(2, acc.getPw());
-			pstmt.setDate(3, acc.getBirthday());
-			pstmt.setString(4, acc.getMnum());
-			pstmt.setString(5, acc.getPnum());
-			pstmt.setString(6, acc.getEmail());
-			pstmt.setString(7, acc.getAddress());
-			pstmt.setDate(8, acc.getRegdate());
+			pstmt.setString(1, acc.getName());
+			pstmt.setString(2, acc.getId());
+			pstmt.setString(3, acc.getPw());
+			pstmt.setString(4, acc.getBirthdayS());
+			pstmt.setString(5, acc.getMnum());
+			pstmt.setString(6, acc.getPnum());
+			pstmt.setString(7, acc.getEmail());
+			pstmt.setString(8, acc.getAddress());
 			pstmt.setInt(9, acc.getAdmin());
 			pstmt.executeUpdate();
 			

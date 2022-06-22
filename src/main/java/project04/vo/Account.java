@@ -8,6 +8,7 @@ public class Account {
 	private String id;
 	private String pw;
 	private Date birthday;
+	private String birthdayS;
 	private String mnum;
 	private String pnum;
 	private String email;
@@ -31,6 +32,19 @@ public class Account {
 		this.email = email;
 		this.address = address;
 		this.regdate = regdate;
+		this.admin = admin;
+	}
+	public Account(String name, String id, String pw, String birthdayS, String mnum, String pnum, String email,
+			String address, int admin) {
+		super();
+		this.name = name;
+		this.id = id;
+		this.pw = pw;
+		this.birthdayS = birthdayS;
+		this.mnum = mnum;
+		this.pnum = pnum;
+		this.email = email;
+		this.address = address;
 		this.admin = admin;
 	}
 	public int getAccno() {
@@ -98,5 +112,11 @@ public class Account {
 	}
 	public void setAdmin(int admin) {
 		this.admin = admin;
+	}
+	public String getBirthdayS() {
+		return birthdayS;
+	}
+	public void setBirthdayS(String birthdayS) {
+		this.birthdayS = birthdayS;
 	}
 }

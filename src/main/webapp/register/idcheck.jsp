@@ -15,7 +15,12 @@ String path = request.getContextPath();
 <script type="text/javascript" src="<%=path%>/util/cookie.js"></script>
 </head>
 <body>
+</body>
 <script type="text/javascript">
+function sleep(ms) {
+	  const wakeUpTime = Date.now() + ms;
+	  while (Date.now() < wakeUpTime) {}
+}
 <%
 String id = request.getParameter("id");
 
@@ -23,17 +28,19 @@ if(!inputCheck.isEmpty(id)){
 	DAO dao = new DAO();
 	if(dao.getAccountId(id) == null){ %>
 			opener.parent.canUseId();
+			sleep(20);
 			window.close();
 <%
 	} else { %>
 	opener.parent.cantUseId();
+	sleep(20);
 	window.close();
 	<%}
 }else {
 %>
 opener.parent.cantUseId();
+sleep(20);
 window.close();
 <%}%>
 </script>
-</body>
 </html>

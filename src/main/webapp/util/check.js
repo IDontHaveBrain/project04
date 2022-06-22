@@ -18,3 +18,10 @@ function haveBlank(arg){
 	}
 	return false;
 }
+
+function inLength(arg, min, max){
+	if(arg.length < min || arg.length > max){
+		return false;
+	}
+	return true;
+}
