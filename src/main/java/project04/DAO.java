@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import project04.vo.Account;
 import project04.vo.Board;
 import project04.vo.Photog;
+import project04.vo.Posting;
 
 public class DAO {
 	private Connection con;
@@ -370,7 +371,7 @@ public class DAO {
 			}
 		}
 	}
-	//0622추가 (갤러리 dao)
+	//0623수정 (갤러리 dao)
 	//전체 게시글 목록 조회
 	public ArrayList<Board> getBdList() {
 		ArrayList<Board> bdList = new ArrayList<Board>();
@@ -811,7 +812,7 @@ public class DAO {
 			String sql = "SELECT *\r\n"
 					+ "FROM photog\r\n"
 					+ "WHERE title LIKE '%'||?||'%'"
-					+ "AND content LIKE '%'||?||'%'";
+					+ "AND content LIKE '%'||?||'%' ORDER BY uploaddate desc ";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, title);
 			pstmt.setString(2, content);
@@ -871,7 +872,7 @@ public class DAO {
 			setConn();
 			String sql = "SELECT * FROM photog\r\n"
 					+ "WHERE title LIKE '%'||?||'%'\r\n"
-					+ "OR content LIKE '%'||?||'%'";
+					+ "OR content LIKE '%'||?||'%' ORDER BY uploaddate desc";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, input);
 			pstmt.setString(2, input);
@@ -927,8 +928,8 @@ public class DAO {
 	
 
 	//포토갤러리 게시글번호로 조회 (단일데이터)
-	public ArrayList<Photog> getPgList_Postid(int postid) {
-		ArrayList<Photog> pgList = new ArrayList<Photog>();
+	public Photog getPgList_Postid(int postid) {
+		Photog pg = new Photog();
 		try {
 			setConn();
 			String sql = "SELECT *\r\n"
@@ -937,16 +938,16 @@ public class DAO {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, postid);
 			rs = pstmt.executeQuery();
-			while(rs.next()) {
+			if(rs.next()) {
 				//Photog(int postid, int accno, String title, Date uploaddate, String content, String imgurl)
-				pgList.add(new Photog(
+				pg = new Photog(
 							rs.getInt("postid"),
 							rs.getInt("accno"),
 							rs.getString("title"),
 							rs.getDate("uploaddate"),
 							rs.getString("content"),
 							rs.getString("imgurl")
-							));
+							);
 			}
 			rs.close();
 			pstmt.close();
@@ -982,7 +983,7 @@ public class DAO {
 				}
 			}
 		}
-		return pgList;
+		return pg;
 	}
 
 	//포토갤러리 데이터 수
@@ -1285,6 +1286,561 @@ public class DAO {
 			}
 		}
 	}
+	//간행물 조회
+	public ArrayList<Posting> getPtList() {
+		ArrayList<Posting> ptList = new ArrayList<Posting>();
+		try {
+			setConn();
+			String sql = "SELECT * from posting";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Posting(int postid, int accno, String subtype, String title, Date uploaddate, String pfile, String content)
+				ptList.add(new Posting(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("subtype"),
+						rs.getString("title"),
+						rs.getDate("uploaddate"),
+						rs.getString("pfile"),
+						rs.getString("content")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return ptList;
+	}
+
+	//제목으로 간행물 조회
+	public ArrayList<Posting> getPtListTitle(String title) {
+		ArrayList<Posting> ptList = new ArrayList<Posting>();
+		try {
+			setConn();
+			String sql = "SELECT * FROM posting WHERE title LIKE '%'||?||'%'";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Posting(int postid, int accno, String subtype, String title, Date uploaddate, String pfile, String content)
+				ptList.add(new Posting(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("subtype"),
+						rs.getString("title"),
+						rs.getDate("uploaddate"),
+						rs.getString("pfile"),
+						rs.getString("content")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return ptList;
+	}
+
+	//내용으로 간행물 조회
+	public ArrayList<Posting> getPtListContent(String content) {
+		ArrayList<Posting> ptList = new ArrayList<Posting>();
+		try {
+			setConn();
+			String sql = "SELECT * FROM posting WHERE content LIKE '%'||?||'%'";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, content);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Posting(int postid, int accno, String subtype, String title, Date uploaddate, String pfile, String content)
+				ptList.add(new Posting(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("subtype"),
+						rs.getString("title"),
+						rs.getDate("uploaddate"),
+						rs.getString("pfile"),
+						rs.getString("content")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return ptList;
+	}
+
+	//제목,내용으로 포토갤러리 조회
+	public ArrayList<Posting> getPListTitle_Content(String title, String content) {
+		ArrayList<Posting> pList = new ArrayList<Posting>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM posting\r\n"
+					+ "WHERE title LIKE '%'||?||'%'"
+					+ "AND content LIKE '%'||?||'%'";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Posting(int postid, int accno, String subtype, String title, 
+				//Date uploaddate, String pfile, String content)
+				pList.add(new Posting(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("subtype"),
+							rs.getString("title"),
+							rs.getDate("uploaddate"),
+							rs.getString("pfile"),
+							rs.getString("content")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return pList;
+	}
+	//간행물 데이터 수
+	public int getPList_Count() {
+		int cnt=0;
+		try {
+			setConn();
+			String sql = "SELECT count(*) c FROM posting";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			cnt=rs.getInt("c");
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cnt;
+	}
+	//제목,내용으로 포토갤러리 조회
+	public ArrayList<Posting> getPList_All(String input) {
+		ArrayList<Posting> pList = new ArrayList<Posting>();
+		try {
+			setConn();
+			String sql = "SELECT * FROM posting\r\n"
+					+ "WHERE title LIKE '%'||?||'%'\r\n"
+					+ "OR content LIKE '%'||?||'%'";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, input);
+			pstmt.setString(2, input);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Posting(int postid, int accno, String subtype, String title, 
+				//Date uploaddate, String pfile, String content)
+				pList.add(new Posting(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("subtype"),
+							rs.getString("title"),
+							rs.getDate("uploaddate"),
+							rs.getString("pfile"),
+							rs.getString("content")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return pList;
+	}
+	//간행물 게시글번호로 조회 (단일데이터)
+	public Posting getPList_Postid(int postid) {
+		Posting p = new Posting();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM posting\r\n"
+					+ "WHERE postid=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, postid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				//Posting(int postid, int accno, String subtype, String title, Date uploaddate, String pfile, String content)
+				p = new Posting(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("subtype"),
+							rs.getString("title"),
+							rs.getDate("uploaddate"),
+							rs.getString("pfile"),
+							rs.getString("content")
+							);
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return p;
+	}
+	// 간행물 등록
+	public void insertPList(Posting pt) {
+		try {
+			setConn();
+			con.setAutoCommit(false);
+			//Posting(int postid, int accno, String subtype, String title, String uploaddate_s, String pfile, String content)
+			String sql = "INSERT INTO posting values(?,?,?,?,sysdate,?,?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, pt.getPostid());
+			pstmt.setInt(2, pt.getAccno());
+			pstmt.setString(3, pt.getSubtype());
+			pstmt.setString(4, pt.getTitle());
+			pstmt.setString(6, pt.getPfile());
+			pstmt.setString(7, pt.getContent());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.getMessage();
+			}
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	// 간행물 수정
+	public void updatePList(Posting pt) {
+		try {
+			setConn();
+			con.setAutoCommit(false); 
+			String sql = "UPDATE posting\r\n"
+					+ "	SET subtype=?,\r\n"
+					+ "		title=?,\r\n"
+					+ "		uploaddate=?,\r\n"
+					+ "		pfile=?,\r\n"
+					+ "		content=?\r\n"
+					+ "	WHERE POSTID = ?\r\n"
+					+ "	AND ACCNO = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, pt.getSubtype());
+			pstmt.setString(2, pt.getTitle());
+			pstmt.setString(3, pt.getUploaddate_s());
+			pstmt.setString(4, pt.getPfile());
+			pstmt.setString(5, pt.getContent());
+			pstmt.setInt(6, pt.getPostid());
+			pstmt.setInt(7, pt.getAccno());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.getMessage();
+			}
+			
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	//간행물 삭제
+	public void deletePList(int postid) {
+		try {
+			setConn();
+			con.setAutoCommit(false);
+			String sql = "DELETE FROM posting\r\n"
+					+ "WHERE postid = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, postid);
+			
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.getMessage();
+			}
+			
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+		
 }
 
 

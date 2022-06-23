@@ -22,32 +22,42 @@ String path = request.getContextPath();
 	DAO dao = new DAO();
 	String postidS = request.getParameter("postid");
 	int postid = 10000000;
+	Photog pt = new Photog();
 	if(postidS!=null && !postidS.trim().equals("")){
 		postid = Integer.parseInt(postidS);
+		pt = dao.getPgList_Postid(postid);
 	}
-		
-	dao.getPgList_Postid(postid);
+	String proc = request.getParameter("proc");
+	if(proc==null) proc="";
+	if(proc!=null && !proc.trim().equals("")){
+		if(proc.equals("del")){
+			dao.deletePgList(postid);
+		}
+	}
+	
 %>
-<script>
-	function backList(){
-		if(confirm("목록으로 이동하시겠습니까?")){
+<script type="text/javascript">
+	var proc = "<%=proc%>";
+	if(proc!=""){
+		if(proc="del"){
+			alert("삭제되었습니다.\n목록 화면으로 이동합니다");
 			location.href="photoGal.jsp";
 		}
 	}
 </script>
+
 <body>
 	<div class="title_area">
 		<h1 class="title">포토갤러리</h1>
 	</div>
 	<div class="main_area">
-		<%for(Photog pg:dao.getPgList_Postid(postid)){ %>
 		<div class="name_area">
-			<span id="type">생태연구</span><span id="name"><%=pg.getTitle() %></span>
+			<span id="type">생태연구</span><span id="name"><%=pt.getTitle() %></span>
 		</div>
 		<div class="info_area">
 			<ul class="info_list">
 				<li class="info_head">작성일</li>
-				<li class="info_data"><%=pg.getUploaddate() %></li>
+				<li class="info_data"><%=pt.getUploaddate() %></li>
 				<li class="info_head">작성자</li>
 				<li class="info_data"><%=dao.getPgList_Name(postid) %></li>
 			</ul>
@@ -55,21 +65,19 @@ String path = request.getContextPath();
 		<br>
 		<div class="img_area"> <%-- 0620 17:55 --%>
 			<div class="img_box">
-				<img class="img" src=<%=pg.getImgurl() %>>
+				<img class="img" src=<%=pt.getImgurl() %>>
 			</div>
 		</div>
 		<br>
 		<div class="content_title_area">
 			<span class="content_title">내용</span>
 		</div>
-		
-		
 	</div>
 	<div class="sub_area">
 		<div class="content_area">
-			<p class="content"><%=pg.getContent() %></p>
+			<p class="content"><%=pt.getContent() %></p>
 		</div>
-		<%} %>
+		
 		<div class="source_area">
 			<span class="source">출처표시</span>
 		</div>
@@ -77,10 +85,23 @@ String path = request.getContextPath();
 		<input class="list_button" type="button" value="목록" onclick="backList()">
 		<input class="upt_button" type="button" value="수정" onclick="uptPg()">
 		<input class="del_button" type="button" value="삭제" onclick="delPg()">
-		<input type="hidden" name="proc"/>
+		<form><input type="hidden" name="proc"/><input type="hidden" name="postid" value="<%=pt.getPostid()%>"/></form>
 	</div>
-
-	
-	
+<script>
+	function backList(){
+		location.href="photoGal.jsp";
+	}
+	function uptPg(){
+		if(confirm("수정하시겠습니까?")){
+			location.href="pg_mod.jsp?postid="+<%=postid%>;
+		}
+	}
+	function delPg(){
+		if(confirm("삭제하시겠습니까?")){
+			document.querySelector("[name=proc]").value="del";
+			document.querySelector("form").submit();
+		}
+	}
+</script>
 </body>
 </html>

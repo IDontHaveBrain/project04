@@ -11,7 +11,7 @@ String path = request.getContextPath();
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시글 수정(간행물)</title>
 <link href="<%=path %>\css\pg_postingCss.css" rel="stylesheet">
 <style>
 
@@ -21,10 +21,10 @@ String path = request.getContextPath();
 	
 	*/
 	function insPost(){
-		if(confirm("등록하시겠습니까?")){
+		if(confirm("수정하시겠습니까?")){
 			var titleObj = document.querySelector("[name=title]");
+			var subtypeObj = document.querySelector("[name=subtype]");
 			var contentObj = document.querySelector("[name=content]");
-			var imgurlObj = document.querySelector("[name=imgurl]");
 			if(titleObj.value.trim()==""){
 				alert("제목을 입력하세요");
 				titleObj.focus();
@@ -35,9 +35,9 @@ String path = request.getContextPath();
 				contentObj.focus();
 				return;
 			}
-			if(imgurlObj.value.trim()==""){
-				alert("이미지 경로를 입력하세요");
-				imgurlObj.focus();
+			if(subtypeObj.value.trim()==""){
+				alert("분류를 입력하세요");
+				subtypeObj.focus();
 				return;
 			}
 			document.querySelector("form").submit();
@@ -62,21 +62,32 @@ String path = request.getContextPath();
 	
 	if(title!=null && title.trim().equals("")){
 		//Photog pg = new Photog(postid, accno, title, content, imgurl);
-		//dao.insertPgList(pg);
+		//dao.updatePgList(pg);
 	}
+	
+	String postidS = request.getParameter("postid");
+	int postid = 10000000;
+	Posting p = new Posting();
+	if(postidS!=null && !postidS.trim().equals("")){
+		postid = Integer.parseInt(postidS);
+		p = dao.getPList_Postid(postid);
+	}
+	
+
 %>
 
-<h1 class="page_title">게시글 작성</h1>
+<h1 class="page_title">게시글 수정</h1>
 <div class="input_area">
 	<form class="input_form">
 		<table class="input_table" > 
-			<tr><th>제목</th><td><input type="text" id=title name=title value="" size="20"></td></tr>
-			<tr><th>내용</th><td><textarea id=content name=content></textarea></td></tr>
-			<tr><th>이미지 첨부</th><td><input type="text" id=imgurl name=imgurl value=""></td></tr>
+			<tr><th>제목</th><td><input type="text" id=title name=title value="<%=p.getTitle() %>" size="20"></td></tr>
+			<tr><th>분류</th><td><input type="text" id=subtype name=subtype value="<%=p.getSubtype()%>"></td></tr>
+			<tr><th>첨부파일</th><td><input type="text" id=pfile name=pfile value="<%=p.getPfile()%>"></td></tr>
+			<tr><th>내용</th><td><textarea id=content name=content><%=p.getContent() %></textarea></td></tr>
 		</table>
 		<br>
 		<div class="inputBtn_area">
-			<input type="button" value="등록" onclick="insPost()">
+			<input type="button" value="수정" onclick="insPost()">
 		</div>
 	</form>
 </div>
