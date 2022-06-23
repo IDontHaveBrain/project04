@@ -57,7 +57,8 @@ if(!(inputCheck.isEmpty(name)||inputCheck.isEmpty(id)||pw==null||inputCheck.isEm
 		if(dao.getAccountId(id)==null){
 			Account temp = new Account(name,id,pw[0],birth,cp,tp,email,address,0);
 			dao.insertAccount(temp);
-			response.sendRedirect("./main.jsp");
+			String nextUrl = "complete.jsp?id="+id;
+			response.sendRedirect(nextUrl);
 		}
 	}
 }
@@ -191,7 +192,7 @@ String path = request.getContextPath();
 	</form>
 	<div class="board-btn">
 		<a href="#" class="board-btn__item write" onclick="javascript:regCheck();return false;" title="가입">가입</a>
-		<a href="#" class="board-btn__item cancel" onclick="location.href='main.jsp';return false;" title="취소">취소</a>
+		<a href="#" class="board-btn__item cancel" onclick="location.href='/main.jsp';return false;" title="취소">취소</a>
 	</div>
 </div>
 </body>
