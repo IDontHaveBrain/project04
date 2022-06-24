@@ -188,3 +188,24 @@ CREATE TABLE species( -- 주요동식물 게시글
 
 INSERT INTO allcontent values(cont_seq.nextval, 'Board');
 INSERT INTO species values(3, '제목', '내용', 'img03.jpg');
+
+
+/*프로그램 정보 테이블*/
+create table Programs(
+	pname varchar2(50) primary key,
+	category varchar2(50),
+	target varchar2(50),
+	days varchar2(50),
+	capacity number,
+	span DATE,
+	ptime date,
+	loc varchar2(50),
+	contents varchar2(100)
+);
+
+/*예약 테이블*/
+CREATE TABLE REZ(
+	rezid NUMBER PRIMARY KEY,
+	accno NUMBER REFERENCES Account(accno),
+	pname varchar2(50) REFERENCES Programs(pname)
+);
