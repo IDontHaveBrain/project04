@@ -197,11 +197,15 @@ create table Programs(
 	target varchar2(50),
 	days varchar2(50),
 	capacity number,
-	span DATE,
-	ptime date,
+	span1 DATE,
+	span2 DATE,
+	ptime varchar2(100),
 	loc varchar2(50),
 	contents varchar2(100)
 );
+
+INSERT INTO Programs values('개미탐험전','생태해설','단체/개인','매일',20,to_date('2022-04-26','YYYY-MM-DD'),to_date('2022-07-31','YYYY-MM-DD'),
+'10:00~10:30','에코리움 내 생태해설 Q&A','지구의 숨은 지배자, 개미');
 
 /*예약 테이블*/
 CREATE TABLE REZ(

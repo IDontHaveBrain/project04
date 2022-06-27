@@ -11,6 +11,8 @@ import project04.vo.Account;
 import project04.vo.Board;
 import project04.vo.Photog;
 import project04.vo.Posting;
+import project04.vo.Programs;
+import project04.vo.Rez;
 
 public class DAO {
 	private Connection con;
@@ -1840,7 +1842,234 @@ public class DAO {
 			}
 		}
 	}
-		
+
+	//프로그램 조회
+	public ArrayList<Programs> getPrgList() {
+		ArrayList<Programs> prgList = new ArrayList<Programs>();
+		try {
+			setConn();
+			String sql = "SELECT * from Programs";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//String pname, String category, String target, String days, int capacity, 
+				//date span, date ptime, String loc, String contents
+				prgList.add(new Programs(
+							rs.getString("pname"),
+							rs.getString("category"),
+							rs.getString("target"),
+							rs.getString("days"),
+							rs.getInt("capacity"),
+							rs.getDate("span1"),
+							rs.getDate("span2"),
+							rs.getString("ptime"),
+							rs.getString("loc"),
+							rs.getString("contents")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return prgList;
+	}
+
+	//예약 목록 조회
+	public ArrayList<Rez> getRezList() {
+		ArrayList<Rez> rezList = new ArrayList<Rez>();
+		try {
+			setConn();
+			String sql = "SELECT * from Rez";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//int rezid, int accno, String pname
+				rezList.add(new Rez(
+							rs.getInt("rezid"),
+							rs.getInt("accno"),
+							rs.getString("pname")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return rezList;
+	}
+
+	//프로그램 조회
+	public ArrayList<Programs> getPrgList(String pname) {
+		ArrayList<Programs> prgList = new ArrayList<Programs>();
+		try {
+			setConn();
+			String sql = "SELECT * from Programs where pname = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, pname);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//String pname, String category, String target, String days, int capacity, 
+				//date span, date ptime, String loc, String contents
+				prgList.add(new Programs(
+							rs.getString("pname"),
+							rs.getString("category"),
+							rs.getString("target"),
+							rs.getString("days"),
+							rs.getInt("capacity"),
+							rs.getDate("span1"),
+							rs.getDate("span2"),
+							rs.getString("ptime"),
+							rs.getString("loc"),
+							rs.getString("contents")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return prgList;
+	}
+
+	//프로그램 조회
+	public ArrayList<Programs> getPrgCtgList() {
+		ArrayList<Programs> ctgList = new ArrayList<Programs>();
+		try {
+			setConn();
+			String sql = "SELECT DISTINCT category from Programs";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//String pname, String category, String target, String days, int capacity, 
+				//date span, date ptime, String loc, String contents
+				ctgList.add(new Programs(
+							rs.getString("category")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return ctgList;
+	}
 }
 
 
