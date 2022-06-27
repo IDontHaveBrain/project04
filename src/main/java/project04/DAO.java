@@ -11,8 +11,12 @@ import project04.vo.Account;
 import project04.vo.Board;
 import project04.vo.Photog;
 import project04.vo.Posting;
+<<<<<<< HEAD
 import project04.vo.Programs;
 import project04.vo.Rez;
+=======
+import project04.vo.Search;
+>>>>>>> 5bce2f111ec6f4aa033206b5276ce94319c52ae8
 
 public class DAO {
 	private Connection con;
@@ -1842,6 +1846,7 @@ public class DAO {
 			}
 		}
 	}
+<<<<<<< HEAD
 
 	//프로그램 조회
 	public ArrayList<Programs> getPrgList() {
@@ -1918,6 +1923,36 @@ public class DAO {
 							rs.getInt("rezid"),
 							rs.getInt("accno"),
 							rs.getString("pname")
+=======
+	public ArrayList<Search> searchTitle(String searchStr) {
+		ArrayList<Search> searchList = new ArrayList<Search>();
+		try {
+			setConn();
+				String sql = "SELECT postid, accno, title, uploaddate, content FROM photog\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, uploaddate, content FROM posting\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, sdate AS uploaddate, content FROM campaign\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, kname AS title, NULL uploaddate, content FROM ecog\n"
+						+ "WHERE kname LIKE '%'||?||'%'";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, searchStr);
+				pstmt.setString(2, searchStr);
+				pstmt.setString(3, searchStr);
+				pstmt.setString(4, searchStr);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				searchList.add(new Search(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("title"),
+							rs.getDate("uploaddate"),
+							rs.getString("content")
+>>>>>>> 5bce2f111ec6f4aa033206b5276ce94319c52ae8
 							));
 			}
 			rs.close();
@@ -1954,6 +1989,7 @@ public class DAO {
 				}
 			}
 		}
+<<<<<<< HEAD
 		return rezList;
 	}
 
@@ -1980,6 +2016,39 @@ public class DAO {
 							rs.getString("ptime"),
 							rs.getString("loc"),
 							rs.getString("contents")
+=======
+		return searchList;
+	}
+
+	public ArrayList<Search> searchContent(String searchStr) {
+		ArrayList<Search> searchList = new ArrayList<Search>();
+		try {
+			setConn();
+				String sql = "SELECT postid, accno, title, uploaddate, content FROM photog\n"
+						+ "WHERE content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, uploaddate, content FROM posting\n"
+						+ "WHERE content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, sdate AS uploaddate, content FROM campaign\n"
+						+ "WHERE content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, kname AS title, NULL uploaddate, content FROM ecog\n"
+						+ "WHERE content LIKE '%'||?||'%'";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, searchStr);
+				pstmt.setString(2, searchStr);
+				pstmt.setString(3, searchStr);
+				pstmt.setString(4, searchStr);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				searchList.add(new Search(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("title"),
+							rs.getDate("uploaddate"),
+							rs.getString("content")
+>>>>>>> 5bce2f111ec6f4aa033206b5276ce94319c52ae8
 							));
 			}
 			rs.close();
@@ -2016,6 +2085,7 @@ public class DAO {
 				}
 			}
 		}
+<<<<<<< HEAD
 		return prgList;
 	}
 
@@ -2032,6 +2102,47 @@ public class DAO {
 				//date span, date ptime, String loc, String contents
 				ctgList.add(new Programs(
 							rs.getString("category")
+=======
+		return searchList;
+	}
+
+	public ArrayList<Search> searchAll(String searchStr) {
+		ArrayList<Search> searchList = new ArrayList<Search>();
+		try {
+			setConn();
+				String sql = "SELECT postid, accno, title, uploaddate, content FROM photog\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "OR content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, uploaddate, content FROM posting\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "OR content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, sdate AS uploaddate, content FROM campaign\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "OR content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, kname AS title, NULL uploaddate, content FROM ecog\n"
+						+ "WHERE kname LIKE '%'||?||'%'\n"
+						+ "OR content LIKE '%'||?||'%'";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, searchStr);
+				pstmt.setString(2, searchStr);
+				pstmt.setString(3, searchStr);
+				pstmt.setString(4, searchStr);
+				pstmt.setString(5, searchStr);
+				pstmt.setString(6, searchStr);
+				pstmt.setString(7, searchStr);
+				pstmt.setString(8, searchStr);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				searchList.add(new Search(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("title"),
+							rs.getDate("uploaddate"),
+							rs.getString("content")
+>>>>>>> 5bce2f111ec6f4aa033206b5276ce94319c52ae8
 							));
 			}
 			rs.close();
@@ -2068,9 +2179,71 @@ public class DAO {
 				}
 			}
 		}
+<<<<<<< HEAD
 		return ctgList;
+=======
+		return searchList;
+	}
+
+	//전체 게시글 목록 조회 (게시글유형을 이용해서)
+	public Board getBdPtype(String ptype) {
+		Board bd = new Board();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM board\r\n"
+					+ "WHERE ptype=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, ptype);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Board(int postid, int accno, String ptype)
+				bd = new Board(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("ptype")
+							);
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return bd;
+>>>>>>> 5bce2f111ec6f4aa033206b5276ce94319c52ae8
 	}
 }
+		
+
 
 
 

@@ -5,7 +5,10 @@ system/1111
 CREATE USER p04 IDENTIFIED BY 1111;
 grant dba to p04;
 */
+<<<<<<< .merge_file_a06504
 
+=======
+>>>>>>> .merge_file_a13212
 CREATE TABLE Account(
 	accno NUMBER PRIMARY KEY,
 	name varchar2(50) NOT NULL,
@@ -81,9 +84,15 @@ CREATE TABLE photog(
 );
 
 INSERT INTO board values(brd_seq.nextval ,1,'포토갤러리');
+<<<<<<< .merge_file_a06504
 INSERT INTO photog values(10000000,1,'제목입니다.',sysdate,'내용입니다.. 내용입니다.','img01.jpeg');
 SELECT * FROM photog;
 
+=======
+SELECT * FROM photog;
+
+
+>>>>>>> .merge_file_a13212
 /*
 생태볼거리 테이블 (게시글번호(외래키), 사용자 고유번호(외래키), 월정보, (전시)관 정보, 대분류, 중분류, 소분류,
 				학명, 국명, 분포, 내용, 이미지)
@@ -197,16 +206,24 @@ create table Programs(
 	target varchar2(50),
 	days varchar2(50),
 	capacity number,
+<<<<<<< .merge_file_a06504
 	span1 DATE,
 	span2 DATE,
 	ptime varchar2(100),
+=======
+	span DATE,
+	ptime date,
+>>>>>>> .merge_file_a13212
 	loc varchar2(50),
 	contents varchar2(100)
 );
 
+<<<<<<< .merge_file_a06504
 INSERT INTO Programs values('개미탐험전','생태해설','단체/개인','매일',20,to_date('2022-04-26','YYYY-MM-DD'),to_date('2022-07-31','YYYY-MM-DD'),
 '10:00~10:30','에코리움 내 생태해설 Q&A','지구의 숨은 지배자, 개미');
 
+=======
+>>>>>>> .merge_file_a13212
 /*예약 테이블*/
 CREATE TABLE REZ(
 	rezid NUMBER PRIMARY KEY,
