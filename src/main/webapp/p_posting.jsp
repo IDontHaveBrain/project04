@@ -11,16 +11,11 @@ String path = request.getContextPath();
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시글 등록(간행물)</title>
+<title>게시글 작성(간행물)</title>
 <link href="<%=path %>\css\pg_postingCss.css" rel="stylesheet">
 <style>
-
 </style>
 <script>
-	/*
-	//Posting(int postid, int accno, String subtype, String title, String uploaddate_s, String pfile, String content)
-	String sql = "INSERT INTO posting values(?,?,?,?,to_date(?,'YYYY-MM-DD'),?,?)";
-	*/
 	function insPost(){
 		if(confirm("등록하시겠습니까?")){
 			var titleObj = document.querySelector("[name=title]");
@@ -49,8 +44,6 @@ String path = request.getContextPath();
 </head>
 <body>
 <%
-	String curId = null;
-	if(session.getAttribute("curId") != null) curId = (String)session.getAttribute("curId");
 	DAO dao = new DAO();
 	String title = request.getParameter("title");
 	if(title==null) title="";
@@ -60,24 +53,32 @@ String path = request.getContextPath();
 	if(content==null) content="";
 	String pfile = request.getParameter("pfile");
 	if(pfile==null) pfile="";
-	
-	//Account ac = new Account();
-	//int postid = 0;
-	//int accno = 0;
-	//ac = dao.getAccountId(curId);
-	//accno = ac.getAccno();
-	//postid = dao.getBdList_postid(accno);
-	
-	if(title!=null && title.trim().equals("")){
-		//Posting(int postid, int accno, String subtype, String title, String pfile, String content)
-		//Posting p = new Posting(postid, accno, subtype, title, pfile, content);
-		//dao.insertPList(pg);
+	String curId = null;
+	if(session.getAttribute("curId") != null) curId = (String)session.getAttribute("curId");
+	Account ac = new Account();
+	int postid = 0;
+	int accno = 0;
+	ac = dao.getAccountId(curId);
+	accno = ac.getAccno();
+	dao.insertBdList(new Board(accno,"간행물"));
+	postid = dao.getBdList_postid(accno);
+	String isReg = "N";
+	if(title!=null && !title.trim().equals("")){
+		Posting p2 = new Posting(postid, accno, subtype, title, pfile, content);
+		dao.insertPList(p2);
+		isReg = "Y";
 	}
 %>
-<%-- 
-	//Posting(int postid, int accno, String subtype, String title, String pfile, String content)
-	String sql = "INSERT INTO posting values(?,?,?,?,sysdate,?,?)";
---%>
+<script type="text/javascript">
+	var isReg = "<%=isReg%>";
+	if(isReg=="Y"){
+		if(confirm("등록이 완료되었습니다.\n목록으로 이동하시겠습니까?")){
+			location.href="postGal.jsp";
+		}else{
+			location.href="";
+		}
+	}
+</script>
 <h1 class="page_title">게시글 작성</h1>
 <div class="input_area">
 	<form class="input_form">
@@ -86,7 +87,6 @@ String path = request.getContextPath();
 			<tr><th>분류</th><td><input type="text" id=subtype name=subtype value=""></td></tr>
 			<tr><th>첨부파일</th><td><input type="text" id=pfile name=pfile value=""></td></tr>
 			<tr><th>내용</th><td><textarea id=content name=content></textarea></td></tr>
-			
 		</table>
 		<br>
 		<div class="inputBtn_area">
@@ -94,7 +94,5 @@ String path = request.getContextPath();
 		</div>
 	</form>
 </div>
-
-
 </body>
 </html>

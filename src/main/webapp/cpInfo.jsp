@@ -11,16 +11,13 @@ String path = request.getContextPath();
 <html>
 <head>
 <meta charset="UTF-8">
-<title>간행물 상세보기</title>
-<link href="<%=path %>\css\postInfo.css" rel="stylesheet">
+<title>공모전·캠페인 상세보기</title>
+<link href="<%=path %>\css\cpInfo.css" rel="stylesheet">
 <style>
 </style>
 <script>
 	function backList(){
-		location.href="postGal.jsp";
-	}
-	function download(){
-		alert("다운로드를 시작합니다.")
+		location.href="cpGal.jsp";
 	}
 </script>
 </head>
@@ -28,18 +25,18 @@ String path = request.getContextPath();
 <%
 	String postIdS = "";
 	postIdS = request.getParameter("postid");
-	int postId = 0;
-	Posting p = new Posting();
+	int postid = 0;
+	Campaign c = new Campaign();
 	DAO dao = new DAO();
 	if(postIdS!=null && !postIdS.trim().equals("")){
-		postId = Integer.parseInt(postIdS);
-		p = dao.getPList_Postid(postId);
+		postid = Integer.parseInt(postIdS);
+		c = dao.getCpList_Postid(postid);
 	}
 	String proc = request.getParameter("proc");
 	if(proc==null) proc="";
 	if(proc!=null && !proc.trim().equals("")){
 		if(proc.equals("del")){
-			dao.deletePList(postId);
+			dao.deleteCpList(postid);
 		}
 	}
 	String curId = null;
@@ -56,47 +53,44 @@ String path = request.getContextPath();
 	if(proc!=""){
 		if(proc="del"){
 			alert("삭제되었습니다.\n목록 화면으로 이동합니다");
-			location.href="postGal.jsp";
+			location.href="cpGal.jsp";
 		}
 	}
 </script>
 <div class="title_area">
-	<h1 class="title">간행물</h1>
+	<h1 class="title">공모전·캠페인</h1>
 </div>
 <div class="main_area">
-	<div class="name_area">
-		<span id="type"><%=p.getSubtype() %></span><span id="name"><%=p.getTitle() %></span>
+	<div class="img_area">
+		<img src="<%=c.getPoster()%>"/>
 	</div>
-	<div class="info_area">
-		<ul class="info_list">
-			<li class="info_head">번호</li>
-			<li class="info_data"><%=p.getPostid() %></li>
-			<li class="info_head">작성일</li>
-			<li class="info_data"><%=p.getUploaddate() %></li>
-			<li class="info_head">작성자</li>
-			<li class="info_data">@@@</li>
-			<li class="info_head">첨부파일</li>
-			<li class="info_data" style="cursor:pointer;" onclick="download()"><%=p.getPfile() %></li>
-		</ul>
+	<div class="title_box">
+		<span><%=c.getTitle() %></span>
 	</div>
-	<br>
-	<div class="content_area">
-		<p><%=p.getContent() %></p>
+	<div class="content_box">
+		<pre>
+	- 접수처 : <%=c.getLink() %>
+	
+	- 기간 : <%=c.getSdate() %> ~ <%=c.getEdate() %>
+	
+	- 내 용 : <%=c.getContent() %> 
+		</pre>
 	</div>
+	<input type="button" id="link_btn" value="바로가기" onclick="location.href='http://<%=c.getLink()%>'"/>
 </div>
 <input class="list_button" type="button" value="목록" onclick="backList()">
 <input class="upt_button" type="button" value="수정" onclick="uptPg()">
 <input class="del_button" type="button" value="삭제" onclick="delPg()">
-<form><input type="hidden" name="proc"/><input type="hidden" name="postid" value="<%=p.getPostid()%>"/></form>
+<form><input type="hidden" name="proc"/><input type="hidden" name="postid" value="<%=c.getPostid()%>"/></form>
 <script>
 	function uptPg(){
 		var id = "<%=curId%>";
 		var accno = "<%=accno%>";
 		if(id.trim()==""||id=="null"){
 			alert("작성자만 수정이 가능합니다.");
-		}else if(accno==<%=p.getAccno()%>){
+		}else if(accno==<%=c.getAccno()%>){
 			if(confirm("수정하시겠습니까?")){
-				location.href="p_mod.jsp?postid="+<%=postId%>;
+				location.href="cp_mod.jsp?postid="+<%=postid%>;
 			}else{
 				alert("작성자만 수정이 가능합니다.");
 			}
@@ -107,7 +101,7 @@ String path = request.getContextPath();
 		var accno = "<%=accno%>";
 		if(id.trim()==""||id=="null"){
 			alert("작성자만 삭제가 가능합니다.");
-		}else if(accno==<%=p.getAccno()%>){
+		}else if(accno==<%=c.getAccno()%>){
 			if(confirm("삭제하시겠습니까?")){
 				document.querySelector("[name=proc]").value="del";
 				document.querySelector("form").submit();

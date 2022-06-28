@@ -36,25 +36,25 @@ String path = request.getContextPath();
 	}
 	String curId = null;
 	if(session.getAttribute("curId") != null) curId = (String)session.getAttribute("curId");
+	Account ac = new Account();
+	int accno = 0;
+	if(curId != null){
+		ac = dao.getAccountId(curId);
+		accno = ac.getAccno();
+	}
 %>
 	<script type="text/javascript">
 		function goPhotoInfo(postid){
 			location.href="photoInfo.jsp?postid="+postid;
 		}
-		<%--
 		function goPostingPage(){
-			if(<%=curId%>!=null){
-				location.href="pg_posting.jsp";
-			}else{
+			var id = "<%=curId%>";
+			if(id.trim()==""||id=="null"){
 				alert("회원만 등록 가능합니다.")
-			}
+			}else{
+				location.href="pg_posting.jsp"	
+			}		
 		}
-		--%>
-		function goPostingPage(){
-			location.href="pg_posting.jsp";
-		}
-		
-		
 	</script>
 	<div class="main">
 		<h1 class="title">포토갤러리</h1>

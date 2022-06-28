@@ -14,12 +14,8 @@ String path = request.getContextPath();
 <title>게시글 수정(포토갤러리)</title>
 <link href="<%=path %>\css\pg_postingCss.css" rel="stylesheet">
 <style>
-
 </style>
 <script>
-	/*
-	
-	*/
 	function insPost(){
 		if(confirm("수정하시겠습니까?")){
 			var titleObj = document.querySelector("[name=title]");
@@ -47,24 +43,10 @@ String path = request.getContextPath();
 </head>
 <body>
 <%
-	String curId = null;
-	if(session.getAttribute("curId") != null) curId = (String)session.getAttribute("curId");
 	DAO dao = new DAO();
 	String title = request.getParameter("title");
 	String content = request.getParameter("content");
 	String imgurl = request.getParameter("imgurl");
-	//Account ac = new Account();
-	//int postid = 0;
-	//int accno = 0;
-	//ac = dao.getAccountId(curId);
-	//accno = ac.getAccno();
-	//postid = dao.getBdList_postid(accno);
-	
-	if(title!=null && title.trim().equals("")){
-		//Photog pg = new Photog(postid, accno, title, content, imgurl);
-		//dao.updatePgList(pg);
-	}
-	
 	String postidS = request.getParameter("postid");
 	int postid = 10000000;
 	Photog pt = new Photog();
@@ -72,10 +54,29 @@ String path = request.getContextPath();
 		postid = Integer.parseInt(postidS);
 		pt = dao.getPgList_Postid(postid);
 	}
-	
-
+	String curId = null;
+	if(session.getAttribute("curId") != null) curId = (String)session.getAttribute("curId");
+	Account ac = new Account();
+	int accno = 0;
+	ac = dao.getAccountId(curId);
+	accno = ac.getAccno();
+	String isReg = "N";
+	if(title!=null && !title.trim().equals("")){
+		Photog pg = new Photog(postid, accno, title, content, imgurl);
+		dao.updatePgList(pg);
+		isReg = "Y";
+	}
 %>
-
+<script type="text/javascript">
+	var isReg = "<%=isReg%>";
+	if(isReg=="Y"){
+		if(confirm("수정이 완료되었습니다.\n목록으로 이동하시겠습니까?")){
+			location.href="photoGal.jsp";
+		}else{
+			location.href="";
+		}
+	}
+</script>
 <h1 class="page_title">게시글 수정</h1>
 <div class="input_area">
 	<form class="input_form">
@@ -86,11 +87,10 @@ String path = request.getContextPath();
 		</table>
 		<br>
 		<div class="inputBtn_area">
+			<input type="hidden" name="postid" value="<%=pt.getPostid() %>"/>
 			<input type="button" value="수정" onclick="insPost()">
 		</div>
 	</form>
 </div>
-
-
 </body>
 </html>
