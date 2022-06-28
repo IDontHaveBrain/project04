@@ -3,7 +3,7 @@ package project04.vo;
 import java.util.Date;
 
 public class Photog {
-	//postid, userid, title, uploaddate, content, imgurl  test
+	//postid, userid, title, uploaddate, content, imgurl 
 	private int postid;
 	private int accno;
 	private String title;
