@@ -7,12 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import project04.vo.Account;
-import project04.vo.Board;
-import project04.vo.Photog;
-import project04.vo.Posting;
-import project04.vo.Programs;
-import project04.vo.Rez;
+import project04.vo.*;
 
 public class DAO {
 	private Connection con;
@@ -373,7 +368,7 @@ public class DAO {
 			}
 		}
 	}
-	//0623수정 (갤러리 dao)
+	//0628수정 (갤러리 dao)
 	//전체 게시글 목록 조회
 	public ArrayList<Board> getBdList() {
 		ArrayList<Board> bdList = new ArrayList<Board>();
@@ -1264,6 +1259,394 @@ public class DAO {
 				con.rollback();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
+				e1.getMessage(); 
+			}
+			
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	//생태볼거리 조회
+	public ArrayList<Ecog> getEgList() {
+		ArrayList<Ecog> egList = new ArrayList<Ecog>();
+		try {
+			setConn();
+			String sql = "SELECT * from ecog";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Ecog(int postid, int accno, String mm, String exspace, String lcategory, String mcategory, String scategory,
+				//String sname, String kname, String distribution, String content, String imgurl)
+				egList.add(new Ecog(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("mm"),
+						rs.getString("exspace"),
+						rs.getString("lcategory"),
+						rs.getString("mcategory"),
+						rs.getString("scategory"),
+						rs.getString("sname"),
+						rs.getString("kname"),
+						rs.getString("distribution"),
+						rs.getString("content"),
+						rs.getString("imgurl")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return egList;
+	}
+
+	//생태볼거리 조회 (조건 : 월정보(필수), 관정보
+	public ArrayList<Ecog> getEgListM_Space(String mm, String space) {
+		ArrayList<Ecog> egList = new ArrayList<Ecog>();
+		try {
+			setConn();
+			String sql = "SELECT * \r\n"
+					+ "FROM ecog\r\n"
+					+ "WHERE mm=?\r\n"
+					+ "AND exspace LIKE '%'||?||'%'\r\n"
+					+ "ORDER BY EXSPACE desc";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, mm);
+			pstmt.setString(2, space);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Ecog(int postid, int accno, String mm, String exspace, String lcategory, String mcategory, String scategory,
+				//String sname, String kname, String distribution, String content, String imgurl)
+				egList.add(new Ecog(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("mm"),
+						rs.getString("exspace"),
+						rs.getString("lcategory"),
+						rs.getString("mcategory"),
+						rs.getString("scategory"),
+						rs.getString("sname"),
+						rs.getString("kname"),
+						rs.getString("distribution"),
+						rs.getString("content"),
+						rs.getString("imgurl")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return egList;
+	}
+
+	//생태볼거리 조회 (조건 : 학명)
+	public ArrayList<Ecog> getEgListKname(String kname) {
+		ArrayList<Ecog> egList = new ArrayList<Ecog>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM ecog\r\n"
+					+ "WHERE kname LIKE '%'||?||'%'";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, kname);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Ecog(int postid, int accno, String mm, String exspace, String lcategory, String mcategory, String scategory,
+				//String sname, String kname, String distribution, String content, String imgurl)
+				egList.add(new Ecog(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("mm"),
+						rs.getString("exspace"),
+						rs.getString("lcategory"),
+						rs.getString("mcategory"),
+						rs.getString("scategory"),
+						rs.getString("sname"),
+						rs.getString("kname"),
+						rs.getString("distribution"),
+						rs.getString("content"),
+						rs.getString("imgurl")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return egList;
+	}
+
+	//간행물 게시글번호로 조회 (단일데이터)
+	public Ecog getEgList_Postid(int postid) {
+		Ecog eg = new Ecog();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM ecog\r\n"
+					+ "WHERE postid=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, postid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				//Ecog(int postid, int accno, String mm, String exspace, String lcategory, String mcategory, String scategory,
+				//		String sname, String kname, String distribution, String content, String imgurl)
+				eg = new Ecog(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("mm"),
+							rs.getString("exspace"),
+							rs.getString("lcategory"),
+							rs.getString("mcategory"),
+							rs.getString("scategory"),
+							rs.getString("sname"),
+							rs.getString("kname"),
+							rs.getString("distribution"),
+							rs.getString("content"),
+							rs.getString("imgurl")
+							);
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return eg;
+	}
+	// 생태볼거리 등록
+	public void insertEgList(Ecog eg) {
+		try {
+			setConn();
+			con.setAutoCommit(false);
+			//Ecog(int postid, int accno, String mm, String exspace, String lcategory, String mcategory, String scategory,
+			//String sname, String kname, String distribution, String content, String imgurl)
+			String sql = "INSERT INTO ecog values(?,?,?,?,?,?,?,?,?,?,?,?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, eg.getPostid());
+			pstmt.setInt(2, eg.getAccno());
+			pstmt.setString(3, eg.getMm());
+			pstmt.setString(4, eg.getExspace());
+			pstmt.setString(5, eg.getLcategory());
+			pstmt.setString(6, eg.getMcategory());
+			pstmt.setString(7, eg.getScategory());
+			pstmt.setString(8, eg.getSname());
+			pstmt.setString(9, eg.getKname());
+			pstmt.setString(10, eg.getDistribution());
+			pstmt.setString(11, eg.getContent());
+			pstmt.setString(12, eg.getImgurl());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.getMessage();
+			}
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	// 생태볼거리 수정
+	public void updateEgList(Ecog eg) {
+		try {
+			setConn();
+			con.setAutoCommit(false); 
+			String sql = "UPDATE ecog\r\n"
+					+ "	SET mm=?,\r\n"
+					+ "		exspace=?,\r\n"
+					+ "		LCATEGORY =?,\r\n"
+					+ "		MCATEGORY =?,\r\n"
+					+ "		SCATEGORY =?,\r\n"
+					+ "		SNAME = ?,\r\n"
+					+ "		KNAME = ?,\r\n"
+					+ "		DISTRIBUTION = ?,\r\n"
+					+ "		CONTENT = ?,\r\n"
+					+ "		IMGURL = ?\r\n"
+					+ "	WHERE POSTID = ?\r\n"
+					+ "	AND ACCNO = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, eg.getMm());
+			pstmt.setString(2, eg.getExspace());
+			pstmt.setString(3, eg.getLcategory());
+			pstmt.setString(4, eg.getMcategory());
+			pstmt.setString(5, eg.getScategory());
+			pstmt.setString(6, eg.getSname());
+			pstmt.setString(7, eg.getKname());
+			pstmt.setString(8, eg.getDistribution());
+			pstmt.setString(9, eg.getContent());
+			pstmt.setString(10, eg.getImgurl());
+			pstmt.setInt(11, eg.getPostid());
+			pstmt.setInt(12, eg.getAccno());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
 				e1.getMessage();
 			}
 			
@@ -1288,6 +1671,1338 @@ public class DAO {
 			}
 		}
 	}
+
+	//생태볼거리 삭제
+	public void deleteEgList(int postid) {
+		try {
+			setConn();
+			con.setAutoCommit(false);
+			String sql = "DELETE FROM ecog\r\n"
+					+ "WHERE postid = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, postid);
+			
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.getMessage();
+			}
+			
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	//공모전캠페인 조회
+	public ArrayList<Campaign> getCpList() {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT * from campaign";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+
+	//진행중인 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListNow() {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT * FROM campaign WHERE sysdate BETWEEN sdate AND edate ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+
+	//예정 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListFuture() {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT * FROM campaign WHERE sysdate<sdate ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+
+	//예정 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListPast() {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT * FROM campaign WHERE sysdate>edate ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+
+	//제목으로 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListTitle(String title) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT * FROM campaign WHERE title LIKE '%'||?||'%'";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+
+	//내용으로 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListContent(String content) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT * FROM campaign WHERE content LIKE '%'||?||'%'";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, content);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+
+	//제목 + 내용으로 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListTitle_Content(String title, String content) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE title LIKE '%'||?||'%'\r\n"
+					+ "AND content LIKE '%'||?||'%'\r\n"
+					+ "ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+	//제목 + 내용으로 진행중인 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListTitle_Content_Now(String title, String content) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE title LIKE '%'||?||'%'\r\n"
+					+ "AND content LIKE '%'||?||'%'\r\n"
+					+ "AND sysdate BETWEEN sdate AND edate\r\n"
+					+ "ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+	//제목 + 내용으로 진행중인 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListTitle_Content_Future(String title, String content) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE title LIKE '%'||?||'%'\r\n"
+					+ "AND content LIKE '%'||?||'%'\r\n"
+					+ "AND sysdate<sdate\r\n"
+					+ "ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+	//제목 + 내용으로 진행중인 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListTitle_Content_Past(String title, String content) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE title LIKE '%'||?||'%'\r\n"
+					+ "AND content LIKE '%'||?||'%'\r\n"
+					+ "AND sysdate>edate\r\n"
+					+ "ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+	//제목 or 내용(전체내용)으로 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListAll(String input) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE title LIKE '%'||?||'%'\r\n"
+					+ "OR content LIKE '%'||?||'%'\r\n"
+					+ "ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, input);
+			pstmt.setString(2, input);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+	//제목 or 내용(전체내용)으로 진행중인 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListAll_Now(String input) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE (title LIKE '%'||?||'%' OR content LIKE '%'||?||'%')\r\n"
+					+ "AND sysdate BETWEEN sdate AND edate\r\n"
+					+ "ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, input);
+			pstmt.setString(2, input);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+	//제목 or 내용(전체내용)으로 예정 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListAll_Future(String input) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE (title LIKE '%'||?||'%' OR content LIKE '%'||?||'%')\r\n"
+					+ "AND sysdate<sdate\r\n"
+					+ "ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, input);
+			pstmt.setString(2, input);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+	//제목 or 내용(전체내용)으로 종료 공모전캠페인 조회
+	public ArrayList<Campaign> getCpListAll_Past(String input) {
+		ArrayList<Campaign> cpList = new ArrayList<Campaign>();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE (title LIKE '%'||?||'%' OR content LIKE '%'||?||'%')\r\n"
+					+ "AND sysdate>edate\r\n"
+					+ "ORDER BY edate DESC";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, input);
+			pstmt.setString(2, input);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				cpList.add(new Campaign(
+						rs.getInt("postid"),
+						rs.getInt("accno"),
+						rs.getString("title"),
+						rs.getString("poster"),
+						rs.getString("link"),
+						rs.getString("content"),
+						rs.getDate("sdate"),
+						rs.getDate("edate")
+						));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cpList;
+	}
+	//캠페인 데이터 수
+	public int getCpList_Count() {
+		int cnt=0;
+		try {
+			setConn();
+			String sql = "SELECT count(*) c \r\n"
+					+ "FROM campaign WHERE title IS NOT null";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			cnt=rs.getInt("c");
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cnt;
+	}
+	//캠페인 데이터 수(현재)
+	public int getCpList_Count_Now() {
+		int cnt=0;
+		try {
+			setConn();
+			String sql = "SELECT count(*) c\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE title IS NOT NULL\r\n"
+					+ "AND sysdate BETWEEN sdate AND edate";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			cnt=rs.getInt("c");
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cnt;
+	}
+	//캠페인 데이터 수(예정)
+	public int getCpList_Count_Future() {
+		int cnt=0;
+		try {
+			setConn();
+			String sql = "SELECT count(*) c\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE title IS NOT NULL\r\n"
+					+ "AND sysdate<sdate";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			cnt=rs.getInt("c");
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cnt;
+	}
+	//캠페인 데이터 수(종료)
+	public int getCpList_Count_Past() {
+		int cnt=0;
+		try {
+			setConn();
+			String sql = "SELECT count(*) c\r\n"
+					+ "FROM campaign\r\n"
+					+ "WHERE title IS NOT NULL\r\n"
+					+ "AND sysdate>edate";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			cnt=rs.getInt("c");
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return cnt;
+	}
+	//간행물 게시글번호로 조회 (단일데이터)
+	public Campaign getCpList_Postid(int postid) {
+		Campaign c = new Campaign();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM CAMPAIGN\r\n"
+					+ "WHERE postid=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, postid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				//Campaign(int postid, int accno, String title, String poster, String link, String content, Date sdate,
+				//Date edate)
+				c = new Campaign(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("title"),
+							rs.getString("poster"),
+							rs.getString("link"),
+							rs.getString("content"),
+							rs.getDate("sdate"),
+							rs.getDate("edate")
+							);
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return c;
+	}
+	// 공모전캠페인 등록
+	public void insertCpList(Campaign cp) {
+		try {
+			setConn();
+			con.setAutoCommit(false);
+			//Campaign(int postid, int accno, String title, String poster, String link, String content, String sdate_s,
+			//String edate_s)
+			String sql = "INSERT INTO campaign values(?,?,?,?,?,?,to_date(?,'YYYY-MM-DD'),to_date(?,'YYYY-MM-DD'))";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, cp.getPostid());
+			pstmt.setInt(2, cp.getAccno());
+			pstmt.setString(3, cp.getTitle());
+			pstmt.setString(4, cp.getPoster());
+			pstmt.setString(5, cp.getLink());
+			pstmt.setString(6, cp.getContent());
+			pstmt.setString(7, cp.getSdate_s());
+			pstmt.setString(8, cp.getEdate_s());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.getMessage();
+			}
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	// 공모전캠페인 수정
+	public void updateCpList(Campaign cp) {
+		try {
+			setConn();
+			con.setAutoCommit(false); 
+			String sql = "UPDATE CAMPAIGN \r\n"
+					+ "	SET title=?,\r\n"
+					+ "		poster=?,\r\n"
+					+ "		link=?,\r\n"
+					+ "		content=?,\r\n"
+					+ "		sdate=to_date(?,'YYYY-MM-DD'),\r\n"
+					+ "		edate=to_date(?,'YYYY-MM-DD')\r\n"
+					+ "	WHERE POSTID = ?\r\n"
+					+ "	AND ACCNO = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, cp.getTitle());
+			pstmt.setString(2, cp.getPoster());
+			pstmt.setString(3, cp.getLink());
+			pstmt.setString(4, cp.getContent());
+			pstmt.setString(5, cp.getSdate_s());
+			pstmt.setString(6, cp.getEdate_s());
+			pstmt.setInt(7, cp.getPostid());
+			pstmt.setInt(8, cp.getAccno());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.getMessage();
+			}
+			
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	//공모전캠페인 삭제
+	public void deleteCpList(int postid) {
+		try {
+			setConn();
+			con.setAutoCommit(false);
+			String sql = "DELETE FROM campaign\r\n"
+					+ "WHERE postid = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, postid);
+			
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.getMessage();
+			}
+			
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	//간행물 조회
 	public ArrayList<Posting> getPtList() {
 		ArrayList<Posting> ptList = new ArrayList<Posting>();
@@ -1701,8 +3416,8 @@ public class DAO {
 			pstmt.setInt(2, pt.getAccno());
 			pstmt.setString(3, pt.getSubtype());
 			pstmt.setString(4, pt.getTitle());
-			pstmt.setString(6, pt.getPfile());
-			pstmt.setString(7, pt.getContent());
+			pstmt.setString(5, pt.getPfile());
+			pstmt.setString(6, pt.getContent());
 			
 			pstmt.executeUpdate();
 			con.commit();
@@ -1747,7 +3462,6 @@ public class DAO {
 			String sql = "UPDATE posting\r\n"
 					+ "	SET subtype=?,\r\n"
 					+ "		title=?,\r\n"
-					+ "		uploaddate=?,\r\n"
 					+ "		pfile=?,\r\n"
 					+ "		content=?\r\n"
 					+ "	WHERE POSTID = ?\r\n"
@@ -1755,11 +3469,10 @@ public class DAO {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, pt.getSubtype());
 			pstmt.setString(2, pt.getTitle());
-			pstmt.setString(3, pt.getUploaddate_s());
-			pstmt.setString(4, pt.getPfile());
-			pstmt.setString(5, pt.getContent());
-			pstmt.setInt(6, pt.getPostid());
-			pstmt.setInt(7, pt.getAccno());
+			pstmt.setString(3, pt.getPfile());
+			pstmt.setString(4, pt.getContent());
+			pstmt.setInt(5, pt.getPostid());
+			pstmt.setInt(6, pt.getAccno());
 			
 			pstmt.executeUpdate();
 			con.commit();
