@@ -93,7 +93,6 @@ if(!(inputCheck.isEmpty(id) || inputCheck.isEmpty(pw))){
 		} else {
 			setCookie('saveId', 0, -1);
 		}
-		
 		return true;
 	}
 </script>

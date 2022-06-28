@@ -5,7 +5,6 @@ system/1111
 CREATE USER p04 IDENTIFIED BY 1111;
 grant dba to p04;
 */
-
 CREATE TABLE Account(
 	accno NUMBER PRIMARY KEY,
 	name varchar2(50) NOT NULL,
@@ -81,8 +80,8 @@ CREATE TABLE photog(
 );
 
 INSERT INTO board values(brd_seq.nextval ,1,'포토갤러리');
-INSERT INTO photog values(10000000,1,'제목입니다.',sysdate,'내용입니다.. 내용입니다.','img01.jpeg');
 SELECT * FROM photog;
+
 
 /*
 생태볼거리 테이블 (게시글번호(외래키), 사용자 고유번호(외래키), 월정보, (전시)관 정보, 대분류, 중분류, 소분류,
