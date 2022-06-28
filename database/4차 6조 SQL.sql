@@ -63,6 +63,11 @@ CREATE SEQUENCE brd_seq
 SELECT * FROM board;
 
 
+DROP TABLE board;
+DROP TABLE photog;
+DROP TABLE posting;
+DROP TABLE ecog;
+DROP TABLE campaign;
 
 
 /*
@@ -80,6 +85,7 @@ CREATE TABLE photog(
 );
 
 INSERT INTO board values(brd_seq.nextval ,1,'포토갤러리');
+insert INTO photog values(10000020,1,'testtestetset',sysdate,'tetstsetset','testet.gif');
 SELECT * FROM photog;
 
 

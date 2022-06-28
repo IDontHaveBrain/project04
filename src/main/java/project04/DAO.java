@@ -3556,28 +3556,33 @@ public class DAO {
 		}
 	}
 	public ArrayList<Search> searchTitle(String searchStr) {
-		ArrayList<Search> searchList = new ArrayList<Search>();
+		ArrayList<Search> searchTitle = new ArrayList<Search>();
 		try {
 			setConn();
-				String sql = "SELECT postid, accno, title, uploaddate, content FROM photog\n"
-						+ "WHERE title LIKE '%'||?||'%'\n"
-						+ "UNION ALL\n"
-						+ "SELECT postid, accno, title, uploaddate, content FROM posting\n"
-						+ "WHERE title LIKE '%'||?||'%'\n"
-						+ "UNION ALL\n"
-						+ "SELECT postid, accno, title, sdate AS uploaddate, content FROM campaign\n"
-						+ "WHERE title LIKE '%'||?||'%'\n"
-						+ "UNION ALL\n"
-						+ "SELECT postid, accno, kname AS title, NULL uploaddate, content FROM ecog\n"
-						+ "WHERE kname LIKE '%'||?||'%'";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, searchStr);
-				pstmt.setString(2, searchStr);
-				pstmt.setString(3, searchStr);
-				pstmt.setString(4, searchStr);
+			String sql = "SELECT ptg.postid, ptg.accno, title, uploaddate, content, b.PTYPE  FROM photog ptg, board b\r\n"
+					+ "WHERE title LIKE '%' || ? || '%'\r\n"
+					+ "AND ptg.POSTID = b.POSTID\r\n"
+					+ "UNION ALL\r\n"
+					+ "SELECT psg.postid, psg.accno, title, uploaddate, content, b.PTYPE  FROM posting psg, board b\r\n"
+					+ "WHERE title LIKE '%' || ? || '%'\r\n"
+					+ "AND psg.POSTID = b.POSTID\n"
+					+ "UNION ALL\r\n"
+					+ "SELECT c.postid, c.accno, title, sdate AS uploaddate, content, b.PTYPE  FROM campaign c, board b\r\n"
+					+ "WHERE title LIKE '%' || ? || '%'\r\n"
+					+ "AND c.POSTID = b.POSTID\r\n"
+					+ "UNION ALL\r\n"
+					+ "SELECT e.postid, e.accno, kname AS title, NULL uploaddate, content, b.PTYPE  FROM ecog e, board b\r\n"
+					+ "WHERE kname LIKE '%' || ? || '%'\r\n"
+					+ "AND e.POSTID = b.POSTID";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, searchStr);
+			pstmt.setString(2, searchStr);
+			pstmt.setString(3, searchStr);
+			pstmt.setString(4, searchStr);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				searchList.add(new Search(
+				searchTitle.add(new Search(
+							rs.getString("ptype"),
 							rs.getInt("postid"),
 							rs.getInt("accno"),
 							rs.getString("title"),
@@ -3619,32 +3624,38 @@ public class DAO {
 				}
 			}
 		}
-		return searchList;
+		return searchTitle;
 	}
-
+	
+	//제목으로 통합검색
 	public ArrayList<Search> searchContent(String searchStr) {
-		ArrayList<Search> searchList = new ArrayList<Search>();
+		ArrayList<Search> searchContent = new ArrayList<Search>();
 		try {
 			setConn();
-				String sql = "SELECT postid, accno, title, uploaddate, content FROM photog\n"
-						+ "WHERE content LIKE '%'||?||'%'\n"
-						+ "UNION ALL\n"
-						+ "SELECT postid, accno, title, uploaddate, content FROM posting\n"
-						+ "WHERE content LIKE '%'||?||'%'\n"
-						+ "UNION ALL\n"
-						+ "SELECT postid, accno, title, sdate AS uploaddate, content FROM campaign\n"
-						+ "WHERE content LIKE '%'||?||'%'\n"
-						+ "UNION ALL\n"
-						+ "SELECT postid, accno, kname AS title, NULL uploaddate, content FROM ecog\n"
-						+ "WHERE content LIKE '%'||?||'%'";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, searchStr);
-				pstmt.setString(2, searchStr);
-				pstmt.setString(3, searchStr);
-				pstmt.setString(4, searchStr);
+			String sql = "SELECT ptg.postid, ptg.accno, title, uploaddate, content, b.PTYPE  FROM photog ptg, board b\n"
+					+ "WHERE content LIKE '%' || ? || '%'\n"
+					+ "AND ptg.POSTID = b.POSTID \n"
+					+ "UNION ALL\n"
+					+ "SELECT psg.postid, psg.accno, title, uploaddate, content, b.PTYPE  FROM posting psg, board b\n"
+					+ "WHERE content LIKE '%' || ? || '%'\n"
+					+ "AND psg.POSTID = b.POSTID\n"
+					+ "UNION ALL\n"
+					+ "SELECT c.postid, c.accno, title, sdate AS uploaddate, content, b.PTYPE  FROM campaign c, board b\n"
+					+ "WHERE content LIKE '%' || ? || '%'\n"
+					+ "AND c.POSTID = b.POSTID\n"
+					+ "UNION ALL\n"
+					+ "SELECT e.postid, e.accno, kname AS title, NULL uploaddate, content, b.PTYPE  FROM ecog e, board b\n"
+					+ "WHERE content LIKE '%' || ? || '%'\n"
+					+ "AND e.POSTID = b.POSTID";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, searchStr);
+			pstmt.setString(2, searchStr);
+			pstmt.setString(3, searchStr);
+			pstmt.setString(4, searchStr);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				searchList.add(new Search(
+				searchContent.add(new Search(
+							rs.getString("ptype"),
 							rs.getInt("postid"),
 							rs.getInt("accno"),
 							rs.getString("title"),
@@ -3686,40 +3697,46 @@ public class DAO {
 				}
 			}
 		}
-		return searchList;
+		return searchContent;
 	}
 
+	//제목, 내용으로 통합검색
 	public ArrayList<Search> searchAll(String searchStr) {
-		ArrayList<Search> searchList = new ArrayList<Search>();
+		ArrayList<Search> searchAll = new ArrayList<Search>();
 		try {
 			setConn();
-				String sql = "SELECT postid, accno, title, uploaddate, content FROM photog\n"
-						+ "WHERE title LIKE '%'||?||'%'\n"
-						+ "OR content LIKE '%'||?||'%'\n"
-						+ "UNION ALL\n"
-						+ "SELECT postid, accno, title, uploaddate, content FROM posting\n"
-						+ "WHERE title LIKE '%'||?||'%'\n"
-						+ "OR content LIKE '%'||?||'%'\n"
-						+ "UNION ALL\n"
-						+ "SELECT postid, accno, title, sdate AS uploaddate, content FROM campaign\n"
-						+ "WHERE title LIKE '%'||?||'%'\n"
-						+ "OR content LIKE '%'||?||'%'\n"
-						+ "UNION ALL\n"
-						+ "SELECT postid, accno, kname AS title, NULL uploaddate, content FROM ecog\n"
-						+ "WHERE kname LIKE '%'||?||'%'\n"
-						+ "OR content LIKE '%'||?||'%'";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, searchStr);
-				pstmt.setString(2, searchStr);
-				pstmt.setString(3, searchStr);
-				pstmt.setString(4, searchStr);
-				pstmt.setString(5, searchStr);
-				pstmt.setString(6, searchStr);
-				pstmt.setString(7, searchStr);
-				pstmt.setString(8, searchStr);
+			String sql = "SELECT ptg.postid, ptg.accno, title, uploaddate, content, b.PTYPE  FROM photog ptg, board b\n"
+					+ "WHERE title LIKE '%' || ? || '%'\n"
+					+ "OR content LIKE '%' || ? || '%'\n"
+					+ "AND ptg.POSTID = b.POSTID \n"
+					+ "UNION ALL\n"
+					+ "SELECT psg.postid, psg.accno, title, uploaddate, content, b.PTYPE  FROM posting psg, board b\n"
+					+ "WHERE title LIKE '%' || ? || '%'\n"
+					+ "OR content LIKE '%' || ? || '%'\n"
+					+ "AND psg.POSTID = b.POSTID\n"
+					+ "UNION ALL\n"
+					+ "SELECT c.postid, c.accno, title, sdate AS uploaddate, content, b.PTYPE  FROM campaign c, board b\n"
+					+ "WHERE title LIKE '%' || ? || '%'\n"
+					+ "OR content LIKE '%' || ? || '%'\n"
+					+ "AND c.POSTID = b.POSTID\n"
+					+ "UNION ALL\n"
+					+ "SELECT e.postid, e.accno, kname AS title, NULL uploaddate, content, b.PTYPE  FROM ecog e, board b\n"
+					+ "WHERE kname LIKE '%' || ? || '%'\n"
+					+ "OR content LIKE '%' || ? || '%'\n"
+					+ "AND e.POSTID = b.POSTID";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, searchStr);
+			pstmt.setString(2, searchStr);
+			pstmt.setString(3, searchStr);
+			pstmt.setString(4, searchStr);
+			pstmt.setString(5, searchStr);
+			pstmt.setString(6, searchStr);
+			pstmt.setString(7, searchStr);
+			pstmt.setString(8, searchStr);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				searchList.add(new Search(
+				searchAll.add(new Search(
+							rs.getString("ptype"),
 							rs.getInt("postid"),
 							rs.getInt("accno"),
 							rs.getString("title"),
@@ -3761,8 +3778,9 @@ public class DAO {
 				}
 			}
 		}
-		return searchList;
+		return searchAll;
 	}
+
 
 	//전체 게시글 목록 조회 (게시글유형을 이용해서)
 	public Board getBdPtype(String ptype) {
