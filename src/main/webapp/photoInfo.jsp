@@ -14,9 +14,7 @@ String path = request.getContextPath();
 	<title>포토갤러리 상세보기</title>
 	<link href="<%=path %>\css\photoInfoCss.css" rel="stylesheet">
 	<style>
-
 	</style>
-	
 </head>
 <%
 	DAO dao = new DAO();
@@ -35,6 +33,14 @@ String path = request.getContextPath();
 		}
 	}
 	
+	String curId = null;
+	int accno = 0;
+	if(session.getAttribute("curId") != null) {
+		curId = (String)session.getAttribute("curId");
+		Account ac = new Account();
+		ac = dao.getAccountId(curId);
+		accno = ac.getAccno();
+	}
 %>
 <script type="text/javascript">
 	var proc = "<%=proc%>";
@@ -45,7 +51,6 @@ String path = request.getContextPath();
 		}
 	}
 </script>
-
 <body>
 	<div class="title_area">
 		<h1 class="title">포토갤러리</h1>
@@ -92,15 +97,31 @@ String path = request.getContextPath();
 		location.href="photoGal.jsp";
 	}
 	function uptPg(){
-		if(confirm("수정하시겠습니까?")){
-			location.href="pg_mod.jsp?postid="+<%=postid%>;
-		}
+		var id = "<%=curId%>";
+		var accno = "<%=accno%>";
+		if(id.trim()==""||id=="null"){
+			alert("작성자만 수정이 가능합니다.");
+		}else if(accno==<%=pt.getAccno()%>){
+			if(confirm("수정하시겠습니까?")){
+				location.href="pg_mod.jsp?postid="+<%=postid%>;
+			}else{
+				alert("작성자만 수정이 가능합니다.");
+			}
+		}	
 	}
 	function delPg(){
-		if(confirm("삭제하시겠습니까?")){
-			document.querySelector("[name=proc]").value="del";
-			document.querySelector("form").submit();
-		}
+		var id = "<%=curId%>";
+		var accno = "<%=accno%>";
+		if(id.trim()==""||id=="null"){
+			alert("작성자만 삭제가 가능합니다.");
+		}else if(accno==<%=pt.getAccno()%>){
+			if(confirm("삭제하시겠습니까?")){
+				document.querySelector("[name=proc]").value="del";
+				document.querySelector("form").submit();
+			}else{
+				alert("작성자만 삭제가 가능합니다.");
+			}
+		}	
 	}
 </script>
 </body>
