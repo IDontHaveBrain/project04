@@ -11,15 +11,12 @@ String path = request.getContextPath();
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시글작성(포토갤러리)</title>
 <link href="<%=path %>\css\pg_postingCss.css" rel="stylesheet">
 <style>
 
 </style>
 <script>
-	/*
-	
-	*/
 	function insPost(){
 		if(confirm("등록하시겠습니까?")){
 			var titleObj = document.querySelector("[name=title]");
@@ -47,25 +44,36 @@ String path = request.getContextPath();
 </head>
 <body>
 <%
-	String curId = null;
-	if(session.getAttribute("curId") != null) curId = (String)session.getAttribute("curId");
 	DAO dao = new DAO();
 	String title = request.getParameter("title");
 	String content = request.getParameter("content");
 	String imgurl = request.getParameter("imgurl");
-	//Account ac = new Account();
-	//int postid = 0;
-	//int accno = 0;
-	//ac = dao.getAccountId(curId);
-	//accno = ac.getAccno();
-	//postid = dao.getBdList_postid(accno);
-	
-	if(title!=null && title.trim().equals("")){
-		//Photog pg = new Photog(postid, accno, title, content, imgurl);
-		//dao.insertPgList(pg);
+	String curId = null;
+	if(session.getAttribute("curId") != null) curId = (String)session.getAttribute("curId");
+	Account ac = new Account();
+	int postid = 0;
+	int accno = 0;
+	ac = dao.getAccountId(curId);
+	accno = ac.getAccno();
+	dao.insertBdList(new Board(accno,"포토갤러리"));
+	postid = dao.getBdList_postid(accno);
+	String isReg = "N";
+	if(title!=null && !title.trim().equals("")){
+		Photog pg = new Photog(postid, accno, title, content, imgurl);
+		dao.insertPgList(pg);
+		isReg = "Y";
 	}
 %>
-
+<script type="text/javascript">
+	var isReg = "<%=isReg%>";
+	if(isReg=="Y"){
+		if(confirm("등록이 완료되었습니다.\n목록으로 이동하시겠습니까?")){
+			location.href="photoGal.jsp";
+		}else{
+			location.href="";
+		}
+	}
+</script>
 <h1 class="page_title">게시글 작성</h1>
 <div class="input_area">
 	<form class="input_form">
@@ -80,7 +88,5 @@ String path = request.getContextPath();
 		</div>
 	</form>
 </div>
-
-
 </body>
 </html>
