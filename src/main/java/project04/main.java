@@ -12,9 +12,15 @@ public class main {
 		Account a1 = dao.getAccountNo(1);
 		System.out.println(a1.getBirthday());
 		System.out.println(dao.login("asdasd123", "123123"));
-		String str1 = "";
+		String str1 = "메로나";
 		String str2 = null;
-		System.out.println(inputCheck.isEmpty(str1));
-		System.out.println(inputCheck.isEmpty(str2));
+		str2 = inputCheck.ifEmptyReplace(str2);
+		System.out.println(inputCheck.isKorean(str1));
+		System.out.println(str2);
+		String str3 = "45444123";
+		System.out.println(str3.chars().allMatch(Character::isDigit));
+		System.out.println(str3.matches("^[a-zA-Z][a-zA-Z!@#$%^&*()_+=<>?0-9]{9,20}$"));
+		String str4 = "asdasd123@naver.com";
+		System.out.println(str4.matches("^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"));
 	}
 }

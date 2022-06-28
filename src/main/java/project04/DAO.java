@@ -1247,7 +1247,7 @@ public class DAO {
 					+ "WHERE postid = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, postid);
-			
+
 			pstmt.executeUpdate();
 			con.commit();
 			pstmt.close();
@@ -1259,9 +1259,9 @@ public class DAO {
 				con.rollback();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
-				e1.getMessage(); 
+				e1.getMessage();
 			}
-			
+
 		} catch ( Exception e ) {
 			System.out.println("일반 예외 : "+e.getMessage());
 		} finally {
@@ -1568,7 +1568,7 @@ public class DAO {
 			pstmt.setString(10, eg.getDistribution());
 			pstmt.setString(11, eg.getContent());
 			pstmt.setString(12, eg.getImgurl());
-			
+
 			pstmt.executeUpdate();
 			con.commit();
 			pstmt.close();
@@ -1608,7 +1608,7 @@ public class DAO {
 	public void updateEgList(Ecog eg) {
 		try {
 			setConn();
-			con.setAutoCommit(false); 
+			con.setAutoCommit(false);
 			String sql = "UPDATE ecog\r\n"
 					+ "	SET mm=?,\r\n"
 					+ "		exspace=?,\r\n"
@@ -1635,7 +1635,7 @@ public class DAO {
 			pstmt.setString(10, eg.getImgurl());
 			pstmt.setInt(11, eg.getPostid());
 			pstmt.setInt(12, eg.getAccno());
-			
+
 			pstmt.executeUpdate();
 			con.commit();
 			pstmt.close();
@@ -1649,7 +1649,7 @@ public class DAO {
 				// TODO Auto-generated catch block
 				e1.getMessage();
 			}
-			
+
 		} catch ( Exception e ) {
 			System.out.println("일반 예외 : "+e.getMessage());
 		} finally {
@@ -1681,7 +1681,7 @@ public class DAO {
 					+ "WHERE postid = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, postid);
-			
+
 			pstmt.executeUpdate();
 			con.commit();
 			pstmt.close();
@@ -1695,7 +1695,7 @@ public class DAO {
 				// TODO Auto-generated catch block
 				e1.getMessage();
 			}
-			
+
 		} catch ( Exception e ) {
 			System.out.println("일반 예외 : "+e.getMessage());
 		} finally {
@@ -2861,7 +2861,7 @@ public class DAO {
 			pstmt.setString(6, cp.getContent());
 			pstmt.setString(7, cp.getSdate_s());
 			pstmt.setString(8, cp.getEdate_s());
-			
+
 			pstmt.executeUpdate();
 			con.commit();
 			pstmt.close();
@@ -2901,7 +2901,7 @@ public class DAO {
 	public void updateCpList(Campaign cp) {
 		try {
 			setConn();
-			con.setAutoCommit(false); 
+			con.setAutoCommit(false);
 			String sql = "UPDATE CAMPAIGN \r\n"
 					+ "	SET title=?,\r\n"
 					+ "		poster=?,\r\n"
@@ -2920,7 +2920,7 @@ public class DAO {
 			pstmt.setString(6, cp.getEdate_s());
 			pstmt.setInt(7, cp.getPostid());
 			pstmt.setInt(8, cp.getAccno());
-			
+
 			pstmt.executeUpdate();
 			con.commit();
 			pstmt.close();
@@ -2934,7 +2934,7 @@ public class DAO {
 				// TODO Auto-generated catch block
 				e1.getMessage();
 			}
-			
+
 		} catch ( Exception e ) {
 			System.out.println("일반 예외 : "+e.getMessage());
 		} finally {
@@ -2966,7 +2966,7 @@ public class DAO {
 					+ "WHERE postid = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, postid);
-			
+
 			pstmt.executeUpdate();
 			con.commit();
 			pstmt.close();
@@ -3555,6 +3555,270 @@ public class DAO {
 			}
 		}
 	}
+	public ArrayList<Search> searchTitle(String searchStr) {
+		ArrayList<Search> searchList = new ArrayList<Search>();
+		try {
+			setConn();
+				String sql = "SELECT postid, accno, title, uploaddate, content FROM photog\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, uploaddate, content FROM posting\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, sdate AS uploaddate, content FROM campaign\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, kname AS title, NULL uploaddate, content FROM ecog\n"
+						+ "WHERE kname LIKE '%'||?||'%'";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, searchStr);
+				pstmt.setString(2, searchStr);
+				pstmt.setString(3, searchStr);
+				pstmt.setString(4, searchStr);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				searchList.add(new Search(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("title"),
+							rs.getDate("uploaddate"),
+							rs.getString("content")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return searchList;
+	}
+
+	public ArrayList<Search> searchContent(String searchStr) {
+		ArrayList<Search> searchList = new ArrayList<Search>();
+		try {
+			setConn();
+				String sql = "SELECT postid, accno, title, uploaddate, content FROM photog\n"
+						+ "WHERE content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, uploaddate, content FROM posting\n"
+						+ "WHERE content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, sdate AS uploaddate, content FROM campaign\n"
+						+ "WHERE content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, kname AS title, NULL uploaddate, content FROM ecog\n"
+						+ "WHERE content LIKE '%'||?||'%'";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, searchStr);
+				pstmt.setString(2, searchStr);
+				pstmt.setString(3, searchStr);
+				pstmt.setString(4, searchStr);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				searchList.add(new Search(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("title"),
+							rs.getDate("uploaddate"),
+							rs.getString("content")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return searchList;
+	}
+
+	public ArrayList<Search> searchAll(String searchStr) {
+		ArrayList<Search> searchList = new ArrayList<Search>();
+		try {
+			setConn();
+				String sql = "SELECT postid, accno, title, uploaddate, content FROM photog\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "OR content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, uploaddate, content FROM posting\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "OR content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, title, sdate AS uploaddate, content FROM campaign\n"
+						+ "WHERE title LIKE '%'||?||'%'\n"
+						+ "OR content LIKE '%'||?||'%'\n"
+						+ "UNION ALL\n"
+						+ "SELECT postid, accno, kname AS title, NULL uploaddate, content FROM ecog\n"
+						+ "WHERE kname LIKE '%'||?||'%'\n"
+						+ "OR content LIKE '%'||?||'%'";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, searchStr);
+				pstmt.setString(2, searchStr);
+				pstmt.setString(3, searchStr);
+				pstmt.setString(4, searchStr);
+				pstmt.setString(5, searchStr);
+				pstmt.setString(6, searchStr);
+				pstmt.setString(7, searchStr);
+				pstmt.setString(8, searchStr);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				searchList.add(new Search(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("title"),
+							rs.getDate("uploaddate"),
+							rs.getString("content")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return searchList;
+	}
+
+	//전체 게시글 목록 조회 (게시글유형을 이용해서)
+	public Board getBdPtype(String ptype) {
+		Board bd = new Board();
+		try {
+			setConn();
+			String sql = "SELECT *\r\n"
+					+ "FROM board\r\n"
+					+ "WHERE ptype=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, ptype);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//Board(int postid, int accno, String ptype)
+				bd = new Board(
+							rs.getInt("postid"),
+							rs.getInt("accno"),
+							rs.getString("ptype")
+							);
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return bd;
+	}
 
 	//프로그램 조회
 	public ArrayList<Programs> getPrgList() {
@@ -3565,7 +3829,7 @@ public class DAO {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				//String pname, String category, String target, String days, int capacity, 
+				//String pname, String category, String target, String days, int capacity,
 				//date span, date ptime, String loc, String contents
 				prgList.add(new Programs(
 							rs.getString("pname"),
@@ -3680,7 +3944,7 @@ public class DAO {
 			pstmt.setString(1, pname);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				//String pname, String category, String target, String days, int capacity, 
+				//String pname, String category, String target, String days, int capacity,
 				//date span, date ptime, String loc, String contents
 				prgList.add(new Programs(
 							rs.getString("pname"),
@@ -3741,7 +4005,7 @@ public class DAO {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				//String pname, String category, String target, String days, int capacity, 
+				//String pname, String category, String target, String days, int capacity,
 				//date span, date ptime, String loc, String contents
 				ctgList.add(new Programs(
 							rs.getString("category")
@@ -3784,6 +4048,3 @@ public class DAO {
 		return ctgList;
 	}
 }
-
-
-
