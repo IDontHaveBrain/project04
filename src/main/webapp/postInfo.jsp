@@ -14,12 +14,8 @@ String path = request.getContextPath();
 <title>간행물 상세보기</title>
 <link href="<%=path %>\css\postInfo.css" rel="stylesheet">
 <style>
-
 </style>
 <script>
-	/*
-	
-	*/
 	function backList(){
 		location.href="postGal.jsp";
 	}
@@ -46,7 +42,14 @@ String path = request.getContextPath();
 			dao.deletePList(postId);
 		}
 	}
-	
+	String curId = null;
+	int accno = 0;
+	if(session.getAttribute("curId") != null) {
+		curId = (String)session.getAttribute("curId");
+		Account ac = new Account();
+		ac = dao.getAccountId(curId);
+		accno = ac.getAccno();
+	}
 %>
 <script type="text/javascript">
 	var proc = "<%=proc%>";
@@ -87,17 +90,32 @@ String path = request.getContextPath();
 <form><input type="hidden" name="proc"/><input type="hidden" name="postid" value="<%=p.getPostid()%>"/></form>
 <script>
 	function uptPg(){
-		if(confirm("수정하시겠습니까?")){
-			location.href="p_mod.jsp?postid="+<%=p.getPostid()%>;
-		}
+		var id = "<%=curId%>";
+		var accno = "<%=accno%>";
+		if(id.trim()==""||id=="null"){
+			alert("작성자만 수정이 가능합니다.");
+		}else if(accno==<%=p.getAccno()%>){
+			if(confirm("수정하시겠습니까?")){
+				location.href="p_mod.jsp?postid="+<%=postId%>;
+			}else{
+				alert("작성자만 수정이 가능합니다.");
+			}
+		}	
 	}
 	function delPg(){
-		if(confirm("삭제하시겠습니까?")){
-			document.querySelector("[name=proc]").value="del";
-			document.querySelector("form").submit();
-		}
+		var id = "<%=curId%>";
+		var accno = "<%=accno%>";
+		if(id.trim()==""||id=="null"){
+			alert("작성자만 삭제가 가능합니다.");
+		}else if(accno==<%=p.getAccno()%>){
+			if(confirm("삭제하시겠습니까?")){
+				document.querySelector("[name=proc]").value="del";
+				document.querySelector("form").submit();
+			}else{
+				alert("작성자만 삭제가 가능합니다.");
+			}
+		}	
 	}
-
 </script>
 </body>
 </html>
