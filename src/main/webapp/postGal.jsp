@@ -14,16 +14,7 @@ String path = request.getContextPath();
 <title>간행물</title>
 <link href="<%=path %>\css\postGal.css" rel="stylesheet">
 <style>
-
 </style>
-<script>
-	function goPostingPage(){
-		location.href="p_posting.jsp";
-	}
-	function goInfo(postid){
-		location.href="postInfo.jsp?postid="+postid;
-	}
-</script>
 </head>
 <body>
 <%
@@ -44,10 +35,29 @@ String path = request.getContextPath();
 	}
 	int data_cnt=0;
 	data_cnt=dao.getPList_Count();
+	String curId = null;
+	if(session.getAttribute("curId") != null) curId = (String)session.getAttribute("curId");
+	Account ac = new Account();
+	int accno = 0;
+	if(curId != null){
+		ac = dao.getAccountId(curId);
+		accno = ac.getAccno();
+	}
 %>
-
+<script type="text/javascript">
+	function goPostingPage(){
+		var id = "<%=curId%>";
+		if(id.trim()==""||id=="null"){
+			alert("회원만 등록 가능합니다.")
+		}else{
+			location.href="p_posting.jsp"	
+		}		
+	}
+	function goInfo(postid){
+		location.href="postInfo.jsp?postid="+postid;
+	}
+</script>
 <h1 class="page_title">간행물</h1>
-
 <div class="search_bar">
 	<span class="data_page_cnt">총 <span class="data_cnt"><%=data_cnt %></span>건</span>
 	<div class="search">
@@ -111,7 +121,5 @@ String path = request.getContextPath();
 			} %>
 	</table>
 </div>
-
-
 </body>
 </html>
