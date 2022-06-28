@@ -39,7 +39,7 @@
         <li class="tright"><a href="login.jsp">로그인</a></li>
     <%} else {%>
     <li class="dropdown tright">
-        <a href="javascript:void(0)" class="dropbtn"><%=account.getName()%>></a>
+        <a href="javascript:void(0)" class="dropbtn"><%=account.getName()%></a>
         <div class="dropdown-content">
             <a href="#logout">로그아웃</a>
         </div>
