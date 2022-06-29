@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
-	import="project04.vo.Search"
+	import="project04.vo.*"
 	import="project04.DAO"
 	import="project04.util.*"
 	%>
@@ -11,6 +11,7 @@ String path = request.getContextPath();
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <%
 	DAO dao = new DAO();
 	String searchAll = request.getParameter("searchStr");
@@ -27,7 +28,13 @@ String path = request.getContextPath();
 			searchContent=searchAll;
 		}
 	}
-	
+	String postidS = request.getParameter("postid");
+	int postid = 10000000;
+	Photog pt = new Photog();
+	if(postidS!=null && !postidS.trim().equals("")){
+		postid = Integer.parseInt(postidS);
+		pt = dao.getPgList_Postid(postid);
+	}
 %>
 
 <meta charset="UTF-8">
@@ -51,14 +58,22 @@ String path = request.getContextPath();
 			x.style.display = "none";
 		}
 	}
-	function go4(postid){
-		location.href="postInfo.jsp?postid="+postid;
-	}
 	function go1(postid){
 		location.href="photoInfo.jsp?postid="+postid;
 	}
+	function go2(postid){
+		location.href="ecoInfo.jsp?postid="+postid;
+	}
+	function go3(postid){
+		location.href="cpInfo.jsp?postid="+postid;
+	}
+	function go4(postid){
+		location.href="postInfo.jsp?postid="+postid;
+	}
+	
 </script>
 <body>
+<jsp:include page="topNav.jsp"></jsp:include>
 	<div class="sub-page layout">
 		<h2 class="sub-page__title">통합검색</h2>
 		<div class="board-search2">
@@ -133,7 +148,7 @@ String path = request.getContextPath();
                             <li class="left"><%=s.getTitle() %></li>
                             <li><%=s.getContent() %></li>
                             <li><%=s.getUploaddate() %></li>
-                            <li>0</li>
+                            <li><%=dao.getPgList_Name(postid) %></li>
                         </ul>
                     </li>
 	<%
@@ -155,7 +170,7 @@ String path = request.getContextPath();
                             <li class="left"><%=s.getTitle() %></li>
                             <li><%=s.getContent() %></li>
                             <li><%=s.getUploaddate() %></li>
-                            <li>0</li>
+                            <li><%=dao.getPgList_Name(postid) %></li>
                         </ul>
                     </li>
 	<%
@@ -177,7 +192,7 @@ String path = request.getContextPath();
                             <li class="left"><%=s.getTitle() %></li>
                             <li><%=s.getContent() %></li>
                             <li><%=s.getUploaddate() %></li>
-                            <li>0</li>
+                            <li><%=dao.getPgList_Name(postid) %></li>
                         </ul>
                     </li>
 	<%

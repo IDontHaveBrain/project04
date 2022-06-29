@@ -3613,20 +3613,21 @@ public class DAO {
 		try {
 			setConn();
 			String sql = "SELECT ptg.postid, ptg.accno, title, uploaddate, content, b.PTYPE  FROM photog ptg, board b\r\n"
-					+ "WHERE title LIKE '%' || ? || '%'\r\n"
-					+ "AND ptg.POSTID = b.POSTID\r\n"
-					+ "UNION ALL\r\n"
+					+ "WHERE ptg.POSTID = b.POSTID\r\n"
+					+ "AND title LIKE '%' || ? || '%'\r\n"
+					+ "UNION\r\n"
 					+ "SELECT psg.postid, psg.accno, title, uploaddate, content, b.PTYPE  FROM posting psg, board b\r\n"
-					+ "WHERE title LIKE '%' || ? || '%'\r\n"
-					+ "AND psg.POSTID = b.POSTID\n"
-					+ "UNION ALL\r\n"
+					+ "WHERE psg.POSTID = b.POSTID\n"
+					+ "AND title LIKE '%' || ? || '%'\r\n"
+					+ "UNION\r\n"
 					+ "SELECT c.postid, c.accno, title, sdate AS uploaddate, content, b.PTYPE  FROM campaign c, board b\r\n"
-					+ "WHERE title LIKE '%' || ? || '%'\r\n"
-					+ "AND c.POSTID = b.POSTID\r\n"
-					+ "UNION ALL\r\n"
+					+ "WHERE c.POSTID = b.POSTID\r\n"
+					+ "AND title LIKE '%' || ? || '%'\r\n"
+					+ "UNION\r\n"
 					+ "SELECT e.postid, e.accno, kname AS title, NULL uploaddate, content, b.PTYPE  FROM ecog e, board b\r\n"
-					+ "WHERE kname LIKE '%' || ? || '%'\r\n"
-					+ "AND e.POSTID = b.POSTID";
+					+ "WHERE e.POSTID = b.POSTID\r\n"
+					+ "AND kname LIKE '%' || ? || '%'";
+					
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, searchStr);
 			pstmt.setString(2, searchStr);
@@ -3686,20 +3687,21 @@ public class DAO {
 		try {
 			setConn();
 			String sql = "SELECT ptg.postid, ptg.accno, title, uploaddate, content, b.PTYPE  FROM photog ptg, board b\n"
-					+ "WHERE content LIKE '%' || ? || '%'\n"
-					+ "AND ptg.POSTID = b.POSTID \n"
-					+ "UNION ALL\n"
+					+ "WHERE ptg.POSTID = b.POSTID \n"
+					+ "AND content LIKE '%' || ? || '%'\n"
+					+ "UNION\n"
 					+ "SELECT psg.postid, psg.accno, title, uploaddate, content, b.PTYPE  FROM posting psg, board b\n"
-					+ "WHERE content LIKE '%' || ? || '%'\n"
-					+ "AND psg.POSTID = b.POSTID\n"
-					+ "UNION ALL\n"
+					+ "WHERE psg.POSTID = b.POSTID\n"
+					+ "AND content LIKE '%' || ? || '%'\n"
+					+ "UNION\n"
 					+ "SELECT c.postid, c.accno, title, sdate AS uploaddate, content, b.PTYPE  FROM campaign c, board b\n"
-					+ "WHERE content LIKE '%' || ? || '%'\n"
-					+ "AND c.POSTID = b.POSTID\n"
-					+ "UNION ALL\n"
+					+ "WHERE c.POSTID = b.POSTID\n"
+					+ "AND content LIKE '%' || ? || '%'\n"
+					+ "UNION\n"
 					+ "SELECT e.postid, e.accno, kname AS title, NULL uploaddate, content, b.PTYPE  FROM ecog e, board b\n"
-					+ "WHERE content LIKE '%' || ? || '%'\n"
-					+ "AND e.POSTID = b.POSTID";
+					+ "WHERE e.POSTID = b.POSTID\n"
+					+ "AND content LIKE '%' || ? || '%'";
+					
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, searchStr);
 			pstmt.setString(2, searchStr);
@@ -3759,24 +3761,36 @@ public class DAO {
 		try {
 			setConn();
 			String sql = "SELECT ptg.postid, ptg.accno, title, uploaddate, content, b.PTYPE  FROM photog ptg, board b\n"
-					+ "WHERE title LIKE '%' || ? || '%'\n"
-					+ "OR content LIKE '%' || ? || '%'\n"
-					+ "AND ptg.POSTID = b.POSTID \n"
-					+ "UNION ALL\n"
+					+ "WHERE ptg.POSTID = b.POSTID\n"
+					+ "AND title LIKE '%'|| ? ||'%'\n"
+					+ "UNION\n"
 					+ "SELECT psg.postid, psg.accno, title, uploaddate, content, b.PTYPE  FROM posting psg, board b\n"
-					+ "WHERE title LIKE '%' || ? || '%'\n"
-					+ "OR content LIKE '%' || ? || '%'\n"
-					+ "AND psg.POSTID = b.POSTID\n"
-					+ "UNION ALL\n"
+					+ "WHERE psg.POSTID = b.POSTID\n"
+					+ "AND title LIKE '%'|| ? ||'%'\n"
+					+ "UNION\n"
 					+ "SELECT c.postid, c.accno, title, sdate AS uploaddate, content, b.PTYPE  FROM campaign c, board b\n"
-					+ "WHERE title LIKE '%' || ? || '%'\n"
-					+ "OR content LIKE '%' || ? || '%'\n"
-					+ "AND c.POSTID = b.POSTID\n"
-					+ "UNION ALL\n"
+					+ "WHERE c.POSTID = b.POSTID\n"
+					+ "AND title LIKE '%'|| ? ||'%'\n"
+					+ "UNION\n"
 					+ "SELECT e.postid, e.accno, kname AS title, NULL uploaddate, content, b.PTYPE  FROM ecog e, board b\n"
-					+ "WHERE kname LIKE '%' || ? || '%'\n"
-					+ "OR content LIKE '%' || ? || '%'\n"
-					+ "AND e.POSTID = b.POSTID";
+					+ "WHERE e.POSTID = b.POSTID\n"
+					+ "AND kname LIKE '%'|| ? ||'%'\n"
+					+ "UNION\n"
+					+ "SELECT ptg.postid, ptg.accno, title, uploaddate, content, b.PTYPE  FROM photog ptg, board b\n"
+					+ "WHERE ptg.POSTID = b.POSTID\n"
+					+ "AND content LIKE '%'|| ? ||'%'\n"
+					+ "UNION\n"
+					+ "SELECT psg.postid, psg.accno, title, uploaddate, content, b.PTYPE  FROM posting psg, board b\n"
+					+ "WHERE psg.POSTID = b.POSTID\n"
+					+ "AND content LIKE '%'|| ? ||'%'\n"
+					+ "UNION\n"
+					+ "SELECT c.postid, c.accno, title, sdate AS uploaddate, content, b.PTYPE  FROM campaign c, board b\n"
+					+ "WHERE c.POSTID = b.POSTID\n"
+					+ "AND content LIKE '%'|| ? ||'%'\n"
+					+ "UNION\n"
+					+ "SELECT e.postid, e.accno, kname AS title, NULL uploaddate, content, b.PTYPE  FROM ecog e, board b\n"
+					+ "WHERE e.POSTID = b.POSTID\n"
+					+ "AND content LIKE '%'|| ? ||'%'";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, searchStr);
 			pstmt.setString(2, searchStr);
