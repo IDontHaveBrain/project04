@@ -52,6 +52,7 @@ String path = request.getContextPath();
 	}
 </script>
 <body>
+	<jsp:include page="topNav.jsp"/>
 	<div class="title_area">
 		<h1 class="title">포토갤러리</h1>
 	</div>

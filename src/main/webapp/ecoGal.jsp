@@ -32,6 +32,7 @@ String path = request.getContextPath();
 		accno = ac.getAccno();
 	}
 %>
+<jsp:include page="topNav.jsp"/>
 <h1 class="page_title">이달의 생태볼거리</h1>
 <div class="search_area">
 	<%for(int idx=1;idx<=12;idx++){ %>

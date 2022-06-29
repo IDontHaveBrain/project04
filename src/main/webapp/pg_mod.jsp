@@ -77,6 +77,7 @@ String path = request.getContextPath();
 		}
 	}
 </script>
+<jsp:include page="topNav.jsp"/>
 <h1 class="page_title">게시글 수정</h1>
 <div class="input_area">
 	<form class="input_form">
