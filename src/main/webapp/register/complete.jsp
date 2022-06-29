@@ -12,6 +12,7 @@
 String path = request.getContextPath();
 String id = request.getParameter("id");
 %>
+<jsp:include page="../topNav.jsp"></jsp:include>
 <script type="text/javascript" src="<%=path%>/util/check.js"></script>
 <script type="text/javascript" src="<%=path%>/util/cookie.js"></script>
 <style type="text/css">
@@ -22,9 +23,9 @@ justify-content : center;
 font-size:18px;
 }
 </style>
-<link href="/project04/css/layout.css" rel="stylesheet">
-<link href="/project04/css/layout2.css" rel="stylesheet"/>
-<link href="/project04/css/common.css" rel="stylesheet"/>
+<link href="<%=path%>/css/layout.css" rel="stylesheet"/>
+<link href="<%=path%>/css/layout2.css" rel="stylesheet"/>
+<link href="<%=path%>/css/common.css" rel="stylesheet"/>
 </head>
 <body>
 	<form name="terms" action="register.jsp">
