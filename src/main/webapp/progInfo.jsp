@@ -6,7 +6,6 @@
 <%
 request.setCharacterEncoding("utf-8");
 String path = request.getContextPath();
-String pname = request.getParameter("pname");
 %> 
 <!DOCTYPE html>
 <html>
@@ -23,12 +22,16 @@ String pname = request.getParameter("pname");
 </head>
 <%
 	DAO dao = new DAO();
-	Programs prg = new Programs();
+String pname = request.getParameter("pname");
+String span1 = request.getParameter("span1");
+String span2 = request.getParameter("span2");
+String totSpan = span1+"~"+span2;
+
+session.setAttribute("pname",pname);
+session.setAttribute("span1",span1);
+session.setAttribute("span2",span2);
 %>
 <script type="text/javascript">
-	function goRez(){
-		location.href="rez_in.jsp";
-	}
 
 </script>
 
@@ -36,8 +39,8 @@ String pname = request.getParameter("pname");
 <h1>프로그램 상세 정보</h1>
 <div>
   <%for(Programs p:dao.getPrgList(pname)){ %>
-  <h2><%=p.getPname()%></h2>
-  <h3>접수기간: <%=p.getSpan1()%>~<%=p.getSpan2()%></h3>
+  <h2><%=pname%></h2>
+  <h3>접수기간: <%=totSpan%></h3>
   <table>
   		<tr>
   		<th>구분</th>
@@ -65,10 +68,8 @@ String pname = request.getParameter("pname");
   		</tr>
   </table>
   <%} %>
-  <input type="button" class="button" value="예약하기" onclick="goRez()" style="float: right;">
+  <input type="button" class="button" value="예약하기" onclick="location.href='rez_in_3.jsp?pname=<%=pname%>&span1=<%=span1%>&span2=<%=span2%>'" style="float: right;">
 </div>
-<div>
-	<h3>상세정보/요청사항</h3>
-</div>
+
 </body>
 </html>
