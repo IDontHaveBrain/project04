@@ -60,6 +60,7 @@ String path = request.getContextPath();
 		}
 	}
 </script>
+<jsp:include page="topNav.jsp"/>
 <div class="title_area">
 	<h1 class="title">간행물</h1>
 </div>

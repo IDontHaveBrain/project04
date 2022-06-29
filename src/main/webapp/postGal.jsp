@@ -57,6 +57,7 @@ String path = request.getContextPath();
 		location.href="postInfo.jsp?postid="+postid;
 	}
 </script>
+<jsp:include page="topNav.jsp"/>
 <h1 class="page_title">간행물</h1>
 <div class="search_bar">
 	<span class="data_page_cnt">총 <span class="data_cnt"><%=data_cnt %></span>건</span>

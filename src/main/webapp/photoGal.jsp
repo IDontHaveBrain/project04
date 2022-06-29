@@ -55,7 +55,9 @@ String path = request.getContextPath();
 				location.href="pg_posting.jsp"	
 			}		
 		}
+		
 	</script>
+	<jsp:include page="topNav.jsp"/>
 	<div class="main">
 		<h1 class="title">포토갤러리</h1>
 	</div>

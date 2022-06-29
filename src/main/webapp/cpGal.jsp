@@ -68,6 +68,7 @@ String path = request.getContextPath();
 			location.href="cpInfo.jsp?postid="+postid;
 		}
 	</script>
+	<jsp:include page="topNav.jsp"/>
 	<div class="main">
 		<h1 class="title">공모전·캠페인</h1>
 	</div>
