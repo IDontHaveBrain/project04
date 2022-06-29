@@ -41,7 +41,7 @@ String path = request.getContextPath();
 <title>통합검색 | 통합검색 | 국립생태원</title>
 <link href="<%=path%>/css/common.css" rel="stylesheet">
 <link href="<%=path%>/css/layout.css" rel="stylesheet">
-<link href="<%=path%>/css/search.css" rel="stylesheet">
+<link href="<%=path%>/css/searchResult.css" rel="stylesheet">
 </head>
 <script>
 	var dateChange = () => {
@@ -72,6 +72,19 @@ String path = request.getContextPath();
 	}
 	
 </script>
+<style>
+
+#ultbl01 ul.ultable li ul li:nth-child(1) { width:6%  }
+
+#ultbl01 ul.ultable li ul li:nth-child(2) { width:20% }
+
+#ultbl01 ul.ultable li ul li:nth-child(3) { width:50% }
+
+#ultbl01 ul.ultable li ul li:nth-child(4) { width:13% }
+
+#ultbl01 ul.ultable li ul li:nth-child(5) { width:5%  }
+
+</style>
 <body>
 <jsp:include page="topNav.jsp"></jsp:include>
 	<div class="sub-page layout">
@@ -117,24 +130,24 @@ String path = request.getContextPath();
 		</div>
 	</div>
 <form>
-    <div id="mainWrapper" >
+    <div id="ultbl01" >
         <ul>
             <li>
-                <ul id ="ulTable">
-                    <li>
-                        <ul>
+                <ul alt="table" class="ultable ultable-striped ultable-bordered ultable-hover">
+                    <li alt="thead">
+                        <ul alt="tr">
                             <li>카테고리</li>
                             <li>제목</li>
                             <li>내용</li>
                             <li>작성일</li>
-                            <li>작성자</li>
                         </ul>
                     </li>
+            		
 	<%
 	if(range.equals("title")){
 		for(Search s:dao.searchTitle(searchTitle)){	
 	%>              
-					<%if(s.getPtype().equals("포토갤러리")) {%>
+					 <%if(s.getPtype().equals("포토갤러리")) {%>
                     <li onclick="go1(<%=s.getPostid()%>)">
                     <%}else if(s.getPtype().equals("생태볼거리")) {%>
                     <li onclick="go2(<%=s.getPostid()%>)">
@@ -143,12 +156,11 @@ String path = request.getContextPath();
                     <%}else if(s.getPtype().equals("간행물")) {%>
                     <li onclick="go4(<%=s.getPostid()%>)">
                     <%}%>
-                        <ul>
+                        <ul alt="tr" class="row">
                             <li><%=s.getPtype() %></li>
-                            <li class="left"><%=s.getTitle() %></li>
+                            <li><%=s.getTitle() %></li>
                             <li><%=s.getContent() %></li>
                             <li><%=s.getUploaddate() %></li>
-                            <li><%=dao.getPgList_Name(postid) %></li>
                         </ul>
                     </li>
 	<%
@@ -156,7 +168,7 @@ String path = request.getContextPath();
 	}else if(range.equals("content")){
 		for(Search s:dao.searchContent(searchContent)){
 	%>
-                    <%if(s.getPtype().equals("포토갤러리")) {%>
+                     <%if(s.getPtype().equals("포토갤러리")) {%>
                     <li onclick="go1(<%=s.getPostid()%>)">
                     <%}else if(s.getPtype().equals("생태볼거리")) {%>
                     <li onclick="go2(<%=s.getPostid()%>)">
@@ -165,12 +177,11 @@ String path = request.getContextPath();
                     <%}else if(s.getPtype().equals("간행물")) {%>
                     <li onclick="go4(<%=s.getPostid()%>)">
                     <%}%>
-                        <ul>
+                        <ul alt="tr" class="row">
                             <li><%=s.getPtype() %></li>
-                            <li class="left"><%=s.getTitle() %></li>
+                            <li><%=s.getTitle() %></li>
                             <li><%=s.getContent() %></li>
                             <li><%=s.getUploaddate() %></li>
-                            <li><%=dao.getPgList_Name(postid) %></li>
                         </ul>
                     </li>
 	<%
@@ -187,21 +198,22 @@ String path = request.getContextPath();
                     <%}else if(s.getPtype().equals("간행물")) {%>
                     <li onclick="go4(<%=s.getPostid()%>)">
                     <%}%>
-                        <ul>
+                        <ul alt="tr" class="row">
                             <li><%=s.getPtype() %></li>
-                            <li class="left"><%=s.getTitle() %></li>
+                            <li><%=s.getTitle() %></li>
                             <li><%=s.getContent() %></li>
                             <li><%=s.getUploaddate() %></li>
-                            <li><%=dao.getPgList_Name(postid) %></li>
                         </ul>
                     </li>
 	<%
 		}
 	}
 	%> 
+			
 			</ul>                        	
         </ul>
     </div>
 </form>
+
 </body>
 </html>

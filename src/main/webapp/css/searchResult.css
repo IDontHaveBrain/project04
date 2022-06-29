@@ -1,79 +1,86 @@
 @charset "UTF-8";
-    body{
-        line-height:20em;        
-        font-family:'SpoqaHanSansNeo';
-}
-    ul, li{ 
-        list-style:none;
-        text-align:center;
-        padding:0;
-        margin:0;
+ul.ultable{ 
+
+display: table; 
+
+clear: both;
+
+width: 80%;
+
+    max-width: 100%;
+
+    margin-bottom: 20px;
+
+       border-spacing: 0;
+
+    border-collapse: collapse;
+
+    box-sizing: border-box;
+
+    background-color: transparent;
+
+    list-style: none;
+
+    padding:0;
+    
+    margin : auto;
+
 }
 
-    #mainWrapper{
-        width: 2000px;
-        margin: 0 auto; /*가운데 정렬*/
-    }
+ul.ultable li ul {
 
-    #mainWrapper > ul > li:first-child {
-        text-align: center;
-        font-size:10pt;
-        height:50px;
-        vertical-align:middle;
-        line-height:30px;
+display: table; 
+
+clear: both;
+
+width: 100%;
+
+    max-width: 100%;
+
+list-style: none;
+
+    padding:0;
+	
 }
 
-    #ulTable {margin-top:10px;}
+ul.ultable li ul li {
+
+display:inline-block;
+
+text-align: left;
+
+       display: table-cell;
+
+       padding: 8px;
+
+    line-height: 1.42857143;
+    
+	
+}
+.row:hover {
+	cursor:pointer;
+	background-color:#f5f5f5;
+}
+
+ul.ultable li:first-child ul li { 
+
+    font-weight: bold;
+
+    border-bottom-width: 2px;
+
+    border-top: 0;
+
+       vertical-align: bottom; 
     
 
-    #ulTable > li:first-child > ul > li {
-        background-color:#037a4e;
-        font-weight:bold;
-        text-align:center;
 }
 
-    #ulTable > li > ul {
-        clear:both;
-        padding:0px auto;
-        position:relative;
-        min-width:80px;
-}
-    #ulTable > li > ul > li { 
-        float:left;
-        font-size:15pt;
-        border-bottom:1px solid silver;
-        vertical-align:baseline;
-}    
+ul.ultable-striped li ul:nth-child(2n) { background-color: #f9f9f9; }
 
-    #ulTable > li > ul > li:first-child               {width:10%;} /*No 열 크기*/
-    #ulTable > li > ul > li:first-child +li           {width:20%;} /*제목 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li        {width:40%;} /*작성일 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li     {width:20%;} /*작성자 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li+li{width:10%;} /*조회수 열 크기*/
+ul.ultable-bordered { border: 1px solid #ddd; }
 
-    #divPaging {
-          clear:both; 
-        margin:0 auto; 
-        width:220px; 
-        height:50px;
-}
+ul.ultable-bordered li ul li { border: 1px solid #ddd; }
 
-    #divPaging > div {
-        float:left;
-        width: 30px;
-        margin:0 auto;
-        text-align:center;
-}
 
-    #liSearchOption {clear:both;}
-    #liSearchOption > div {
-        margin:0 auto; 
-        margin-top: 30px; 
-        width:auto; 
-        height:100px;
 
-}
-
-    .left {
-        text-align : left;
-}
+ul.ultable-hover li:last-child ul:hover { background-color: #f5f5f5}

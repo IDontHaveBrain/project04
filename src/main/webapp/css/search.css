@@ -2,13 +2,13 @@
     body{
         line-height:4em;        
         font-family:"맑은 고딕";
-}
+	}
     ul, li{ 
         list-style:none;
         text-align:center;
         padding:0;
         margin:0;
-}
+	}
 
     #mainWrapper{
         width: 1400px;
@@ -37,12 +37,16 @@
         padding:0px auto;
         position:relative;
         min-width:40px;
+        
+
 }
+
     #ulTable > li > ul > li { 
         float:left;
         font-size:16pt;
         border-bottom:1px solid silver;
         vertical-align:baseline;
+        cursor:pointer;
 }    
 
     #ulTable > li > ul > li:first-child               {width:12%;} /*No 열 크기*/
