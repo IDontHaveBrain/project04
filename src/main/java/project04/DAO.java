@@ -3404,6 +3404,59 @@ public class DAO {
 		}
 		return p;
 	}
+	//간행물 게시글번호 이용해서 작성자 이름 반환
+		public String getPList_Name(int postid) {
+			String name = "";
+			try {
+				setConn();
+				String sql = "SELECT name\r\n"
+						+ "FROM account\r\n"
+						+ "WHERE accno IN (\r\n"
+						+ "	SELECT accno\r\n"
+						+ "	FROM posting\r\n"
+						+ "	WHERE postid=?\r\n"
+						+ ")";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, postid);
+				rs = pstmt.executeQuery();
+				rs.next();
+				name=rs.getString("name");
+				rs.close();
+				pstmt.close();
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("DB 에러 : "+e.getMessage());
+			} catch ( Exception e ) {
+				System.out.println("일반 예외 : "+e.getMessage());
+			} finally {
+				if(con!=null) {
+					try {
+						con.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if(pstmt!=null) {
+					try {
+						pstmt.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if(rs!=null) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			return name;
+		}
 	// 간행물 등록
 	public void insertPList(Posting pt) {
 		try {
