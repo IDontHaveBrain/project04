@@ -94,7 +94,7 @@ String path = request.getContextPath();
 							&nbsp;
 						<%} %>
 					</td>
-					<td>작성자</td>
+					<td><%=dao.getPList_Name(p.getPostid()) %></td>
 					<td><%=p.getUploaddate() %></td>
 				</tr>
 		<%
@@ -114,7 +114,7 @@ String path = request.getContextPath();
 							&nbsp;
 						<%} %>
 					</td>
-					<td>작성자</td>
+					<td><%=dao.getPList_Name(p.getPostid()) %></td>
 					<td><%=p.getUploaddate() %></td>
 				</tr>
 				<%
