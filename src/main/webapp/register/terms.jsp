@@ -1,11 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+		 pageEncoding="UTF-8"
+%>
 <!DOCTYPE html>
 <html>
+<%
+	request.setCharacterEncoding("utf-8");
+	String path = request.getContextPath();
+%>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="/project04/css/layout.css" rel="stylesheet">
-<link href="/project04/css/layout2.css" rel="stylesheet"/>
-<link href="/project04/css/common.css" rel="stylesheet"/>
+<jsp:include page="../topNav.jsp"></jsp:include>
+<link href="<%=path%>/css/layout.css" rel="stylesheet"/>
+<link href="<%=path%>/css/layout2.css" rel="stylesheet"/>
+<link href="<%=path%>/css/common.css" rel="stylesheet"/>
 
 </head>
 <body>

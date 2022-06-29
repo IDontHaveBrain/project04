@@ -18,9 +18,10 @@
     <link href="<%=path%>/css/topNav.css" rel="stylesheet">
 </head>
 <body>
-<ul>
-    <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">게시판</a>
+<ul id="topNavUl">
+	<li class="tleft"><a class="tla" href="<%=path%>/main.jsp">메인</a></li>
+    <li class="dropdown tleft">
+        <a class="tla" href="javascript:void(0)" class="dropbtn">게시판</a>
         <div class="dropdown-content">
             <a href="postGal.jsp">간행물</a>
             <a href="photoGal.jsp">포토갤러리</a>
@@ -36,16 +37,17 @@
         }
         if(account == null) {
     %>
-        <li class="tright"><a href="login.jsp">로그인</a></li>
+        <li class="tright"><a class="tla" href="<%=path%>/register/terms.jsp">회원가입</a></li>
+        <li class="tright"><a class="tla" href="<%=path%>/login.jsp">로그인</a></li>
     <%} else {%>
     <li class="dropdown tright">
-        <a href="javascript:void(0)" class="dropbtn"><%=account.getName()%></a>
+        <a href="javascript:void(0)" class="dropbtn tla"><%=account.getName()%></a>
         <div class="dropdown-content">
             <a href="#logout">로그아웃</a>
         </div>
     </li>
     <%}%>
-    <li class="tright"><a href="search.jsp">통합검색</a></li>
+    <li class="tright"><a class="tla" href="<%=path%>/search.jsp">통합검색</a></li>
 </ul>
 </body>
 </html>

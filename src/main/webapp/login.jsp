@@ -12,6 +12,7 @@
 <%
 String path = request.getContextPath();
 %>
+<jsp:include page="topNav.jsp"></jsp:include>
 <script type="text/javascript" src="<%=path%>/util/check.js"></script>
 <script type="text/javascript" src="<%=path%>/util/cookie.js"></script>
 <link href="<%=path%>/css/login.css" rel="stylesheet">

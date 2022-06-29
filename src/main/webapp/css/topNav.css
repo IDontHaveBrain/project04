@@ -1,22 +1,20 @@
-ul {
+#topNavUl {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #333;
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
     top: 0;
 }
 
-li {
+li.tleft {
     float: left;
 }
-.tright{
+li.tright{
     float: right;
 }
 
-li a, .dropbtn {
+.tright a, .tleft a, .dropbtn {
     display: inline-block;
     color: white;
     text-align: center;
@@ -24,7 +22,7 @@ li a, .dropbtn {
     text-decoration: none;
 }
 
-li a:hover, .dropdown:hover .dropbtn {
+.tright a:hover, .tleft a:hover, .dropdown:hover .dropbtn {
     background-color: greenyellow;
 }
 

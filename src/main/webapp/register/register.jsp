@@ -25,7 +25,7 @@ String address = request.getParameter("address"); address=inputCheck.ifEmptyRepl
 String idChkYn = request.getParameter("idChkYn"); idChkYn=inputCheck.ifEmptyReplace(idChkYn);
 String agree = request.getParameter("agree"); agree=inputCheck.ifEmptyReplace(agree);
 if(inputCheck.isEmpty(agree) || !agree.equals("Y"))
-	response.sendRedirect("terms.html");
+	response.sendRedirect("terms.jsp");
 
 int pass = 0;
 if(!(inputCheck.isEmpty(name)||inputCheck.isEmpty(id)||pw==null||inputCheck.isEmpty(pw[0])
@@ -64,13 +64,13 @@ if(!(inputCheck.isEmpty(name)||inputCheck.isEmpty(id)||pw==null||inputCheck.isEm
 }
 
 String path = request.getContextPath();
-
 %>
+<jsp:include page="../topNav.jsp"></jsp:include>
 <script type="text/javascript" src="<%=path%>/util/check.js"></script>
 <script type="text/javascript" src="<%=path%>/util/cookie.js"></script>
-<link href="/project04/css/layout.css" rel="stylesheet"/>
-<link href="/project04/css/layout2.css" rel="stylesheet"/>
-<link href="/project04/css/common.css" rel="stylesheet"/>
+<link href="<%=path%>/css/layout.css" rel="stylesheet"/>
+<link href="<%=path%>/css/layout2.css" rel="stylesheet"/>
+<link href="<%=path%>/css/common.css" rel="stylesheet"/>
 
 </head>
 <body>
