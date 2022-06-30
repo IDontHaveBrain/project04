@@ -12,6 +12,7 @@ DAO dao = new DAO();
 <head>
 <meta charset="UTF-8">
 <title>프로그램 목록</title>
+<jsp:include page="topNav.jsp"></jsp:include>
 <link href="<%=path%>\css\programs.css" rel="stylesheet">
 </head>
 <body>

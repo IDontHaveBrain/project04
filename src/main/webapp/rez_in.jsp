@@ -13,6 +13,7 @@ String path = request.getContextPath();
 <link href="<%=path%>\css\rez.css" rel="stylesheet">
 <meta charset="UTF-8">
 <title>예약하기</title>
+<jsp:include page="topNav.jsp"></jsp:include>
 </head>
 <body>
 <%
@@ -59,7 +60,7 @@ if(name!=null && !name.trim().equals("")){
 		if(confirm("등록 완료\n조회화면으로 이동하시겠습니까?")){
 			location.href="rez_info.jsp?name="+name;
 		}else{
-			location.href="home.jsp";
+			location.href="main.jsp";
 		}
 	}
 </script>

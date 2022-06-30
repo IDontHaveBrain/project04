@@ -21,11 +21,12 @@ if(rezidS!=null && !rezidS.trim().equals("")){
 <head>
 <meta charset="UTF-8">
 <title>예약 상세정보</title>
+<jsp:include page="topNav.jsp"></jsp:include>
 <link href="<%=path %>/css/rez_info.css" rel="stylesheet">
 </head>
 <body>
 <h2>예약 취소되었습니다.</h2>
-<input type="button" value="홈화면으로 이동" onclick="location.href='home.jsp'">
+<input type="button" value="홈화면으로 이동" onclick="location.href='main.jsp'">
 </body>
 
 </html>

@@ -449,50 +449,6 @@ INSERT INTO campaign values(brd_seq.currval,1,'제 2회 에코뱅크 기능 및 
 			,to_date('2021-09-06','YYYY-MM-DD'),to_date('2021-11-05','YYYY-MM-DD'));
 ------------------------------------------------------------------------------------------
 
-CREATE SEQUENCE cont_seq -- 게시글 고유번호 시퀀스
-       INCREMENT BY 1
-       START WITH 1
-       MINVALUE 0
-       MAXVALUE 99999999
-       NOCYCLE;
-
-CREATE TABLE allcontent( -- 전체 게시글
-	articleno NUMBER PRIMARY KEY,
-	articleclass varchar2(50) check(articleclass IN('Board','EndSpecies','Species'))
-);
-
-CREATE TABLE board( -- 게시판 게시글
-	articleno REFERENCES allcontent(articleno),
-	subject varchar2(100),
-	issuedate DATE,
-	content varchar2(2000),
-	picture varchar2(50),
-	doc varchar2(50)
-);
-
-INSERT INTO allcontent values(cont_seq.nextval, 'Board');
-INSERT INTO board values(1, '제목', sysdate, '내용', 'img01.jpg', '첨부파일');
-
-CREATE TABLE endspecies( -- 멸종위기종 게시글
-	articleno REFERENCES allcontent(articleno),
-	subject varchar2(100),
-	content varchar2(2000),
-	picture varchar2(50)
-);
-
-INSERT INTO allcontent values(cont_seq.nextval, 'Board');
-INSERT INTO endspecies values(2, '제목', '내용', 'img02.jpg');
-
-CREATE TABLE species( -- 주요동식물 게시글
-	articleno REFERENCES allcontent(articleno),
-	subject varchar2(100),
-	content varchar2(2000),
-	picture varchar2(50)
-);
-
-INSERT INTO allcontent values(cont_seq.nextval, 'Board');
-INSERT INTO species values(3, '제목', '내용', 'img03.jpg');
-
 
 /*프로그램 정보 테이블*/
 create table Programs(
