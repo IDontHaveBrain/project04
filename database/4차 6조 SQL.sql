@@ -41,7 +41,7 @@ acc_seq.nextval, '화성인', 'aaaabbbb123', '321321',
 TO_DATE('19980513','YYYYMMDD'),'010-5126-4634',NULL,
 'asdasd123@naver.com','경기도 성남시 중원구 성남동 3128',sysdate,0
 );
-
+SELECT * FROM account;
 
 
 /*
@@ -52,6 +52,7 @@ CREATE TABLE board(
 	accno number REFERENCES Account(accno),
 	ptype varchar2(50) check(ptype IN('포토갤러리','생태볼거리','공모전캠페인','간행물'))
 );
+INSERT INTO board values(10000001, 1, '생태볼거리');
 
 CREATE SEQUENCE brd_seq
        INCREMENT BY 1
@@ -108,9 +109,10 @@ CREATE TABLE ecog(
 	imgurl varchar2(2000)	
 );
 
+INSERT INTO board values(10000004, 1, '생태볼거리');
 
 INSERT INTO board values(brd_seq.nextval,1,'생태볼거리');
-INSERT INTO ecog values(10000001,1,'6','에코리움(열대관)','식물군','온실식물','열대식물','Cirinum Americanum','아메리카 문주란',NULL,'내용..@@@','img02.jpeg');
+INSERT INTO ecog values(10000004,1,'6','에코리움(열대관)','식물군','온실식물','열대식물','Cirinum Americanum','아메리카 문주란',NULL,'내용..@@@','img02.jpeg');
 SELECT * FROM ecog;
 
 /*
@@ -126,7 +128,7 @@ CREATE TABLE campaign(
 	sdate DATE,
 	edate DATE	
 );
-
+INSERT INTO board values(10000002, 1, '공모전캠페인');
 INSERT INTO board values(brd_seq.nextval,1,'공모전캠페인');
 INSERT INTO campaign values(10000002,1,'제목입니다','img03.jpeg','www.test.test','내용입니다.',sysdate-10,sysdate+10);
 SELECT * FROM campaign;
