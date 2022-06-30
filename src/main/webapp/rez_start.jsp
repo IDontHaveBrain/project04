@@ -11,6 +11,7 @@ String path = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="topNav.jsp"></jsp:include>
 <link href="<%=path %>/css/rez_info.css" rel="stylesheet">
 <script type="text/javascript">
 </script>

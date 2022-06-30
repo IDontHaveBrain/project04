@@ -23,12 +23,13 @@
     <li class="dropdown tleft">
         <a class="tla" href="javascript:void(0)" class="dropbtn">게시판</a>
         <div class="dropdown-content">
-            <a href="photoGal.jsp">포토갤러리</a>
-            <a href="ecoGal.jsp">생태볼거리</a>
-            <a href="cpGal.jsp">공모전캠페인</a>
-            <a href="postGal.jsp">간행물</a>
+            <a href="<%=path%>/photoGal.jsp">포토갤러리</a>
+            <a href="<%=path%>/ecoGal.jsp">생태볼거리</a>
+            <a href="<%=path%>/cpGal.jsp">공모전캠페인</a>
+            <a href="<%=path%>/postGal.jsp">간행물</a>
         </div>
     </li>
+    <li class="tleft"><a class="tla" href="<%=path%>/rez_start.jsp">예약</a></li>
     <%
         String curId = null;
         Account account = null;
