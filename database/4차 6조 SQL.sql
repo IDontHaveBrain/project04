@@ -5,6 +5,7 @@ system/1111
 CREATE USER p04 IDENTIFIED BY 1111;
 grant dba to p04;
 */
+
 CREATE TABLE Account(
 	accno NUMBER PRIMARY KEY,
 	name varchar2(50) NOT NULL,
@@ -41,7 +42,7 @@ acc_seq.nextval, '화성인', 'aaaabbbb123', '321321',
 TO_DATE('19980513','YYYYMMDD'),'010-5126-4634',NULL,
 'asdasd123@naver.com','경기도 성남시 중원구 성남동 3128',sysdate,0
 );
-SELECT * FROM account;
+
 
 
 /*
@@ -52,7 +53,6 @@ CREATE TABLE board(
 	accno number REFERENCES Account(accno),
 	ptype varchar2(50) check(ptype IN('포토갤러리','생태볼거리','공모전캠페인','간행물'))
 );
-INSERT INTO board values(10000001, 1, '생태볼거리');
 
 CREATE SEQUENCE brd_seq
        INCREMENT BY 1
@@ -64,11 +64,6 @@ CREATE SEQUENCE brd_seq
 SELECT * FROM board;
 
 
-DROP TABLE board;
-DROP TABLE photog;
-DROP TABLE posting;
-DROP TABLE ecog;
-DROP TABLE campaign;
 
 
 /*
@@ -86,9 +81,8 @@ CREATE TABLE photog(
 );
 
 INSERT INTO board values(brd_seq.nextval ,1,'포토갤러리');
-insert INTO photog values(10000020,1,'testtestetset',sysdate,'tetstsetset','testet.gif');
+INSERT INTO photog values(10000000,1,'제목입니다.',sysdate,'내용입니다.. 내용입니다.','img01.jpeg');
 SELECT * FROM photog;
-
 
 /*
 생태볼거리 테이블 (게시글번호(외래키), 사용자 고유번호(외래키), 월정보, (전시)관 정보, 대분류, 중분류, 소분류,
@@ -109,10 +103,9 @@ CREATE TABLE ecog(
 	imgurl varchar2(2000)	
 );
 
-INSERT INTO board values(10000004, 1, '생태볼거리');
 
 INSERT INTO board values(brd_seq.nextval,1,'생태볼거리');
-INSERT INTO ecog values(10000004,1,'6','에코리움(열대관)','식물군','온실식물','열대식물','Cirinum Americanum','아메리카 문주란',NULL,'내용..@@@','img02.jpeg');
+INSERT INTO ecog values(10000001,1,'6','에코리움(열대관)','식물군','온실식물','열대식물','Cirinum Americanum','아메리카 문주란',NULL,'내용..@@@','img02.jpeg');
 SELECT * FROM ecog;
 
 /*
@@ -128,7 +121,7 @@ CREATE TABLE campaign(
 	sdate DATE,
 	edate DATE	
 );
-INSERT INTO board values(10000002, 1, '공모전캠페인');
+
 INSERT INTO board values(brd_seq.nextval,1,'공모전캠페인');
 INSERT INTO campaign values(10000002,1,'제목입니다','img03.jpeg','www.test.test','내용입니다.',sysdate-10,sysdate+10);
 SELECT * FROM campaign;
@@ -213,10 +206,27 @@ create table Programs(
 
 INSERT INTO Programs values('개미탐험전','생태해설','단체/개인','매일',20,to_date('2022-04-26','YYYY-MM-DD'),to_date('2022-07-31','YYYY-MM-DD'),
 '10:00~10:30','에코리움 내 생태해설 Q&A','지구의 숨은 지배자, 개미');
+INSERT INTO Programs values('5대 기후대관 속 탄소중립 이야기','생태해설','단체/개인','매일',20,to_date('2022-05-20','YYYY-MM-DD'),to_date('2022-07-31','YYYY-MM-DD'),
+'11:00~12:00','에코리움 내 생태해설 Q&A','세계 여러 생태계 속 탄소중립적 요소 살펴보기');
+INSERT INTO Programs values('탄소빼기 초록더하기','생태교육','단체','월요일',1,to_date('2022-05-26','YYYY-MM-DD'),to_date('2022-07-25','YYYY-MM-DD'),
+'11:00~11:40','온라인 교육','내 생활 속 탄소빼기 생각해보고 실천해요');
 
+CREATE SEQUENCE rezid_seq
+       INCREMENT BY 1
+       START WITH 20220001
+       MINVALUE 20220001
+       MAXVALUE 99999999
+       NOCYCLE;
+      
 /*예약 테이블*/
 CREATE TABLE REZ(
-	rezid NUMBER PRIMARY KEY,
-	accno NUMBER REFERENCES Account(accno),
-	pname varchar2(50) REFERENCES Programs(pname)
+	rezid NUMBER PRIMARY key,
+	rezdate varchar2(100),
+	pname varchar2(50) REFERENCES Programs(pname),
+	name varchar2(50),
+	email varchar2(100),
+	phone varchar2(100),
+	pay varchar2(50)
 );
+
+INSERT INTO rez values(rezid_seq.nextval, '2022-07-01', '개미탐험전', '홍길동','hongildong@email.com','010-1234-5678','현장결제');
