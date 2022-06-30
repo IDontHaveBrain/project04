@@ -20,7 +20,7 @@ String path = request.getContextPath();
 <br>
 <table>
   <tr><th><input type="button" value="프로그램목록" onclick="location.href='programs.jsp'"><br></th>
-  	  <th><input type="button" value="예약조회" onclick="location.href='rez_info_2.jsp'"></th></tr>
+  	  <th><input type="button" value="예약조회" onclick="location.href='rez_info.jsp'"></th></tr>
 </table>
 
 </body>
