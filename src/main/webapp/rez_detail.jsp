@@ -12,6 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>예약 상세정보</title>
+<jsp:include page="topNav.jsp"></jsp:include>
 <link href="<%=path%>/css/rez_info.css" rel="stylesheet">
 </head>
 <body>

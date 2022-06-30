@@ -11,6 +11,7 @@ String path = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="topNav.jsp"></jsp:include>
 <link href="<%=path%>/css/rez_info.css" rel="stylesheet">
 <script type="text/javascript">
 </script>
@@ -42,7 +43,7 @@ session.setAttribute(name,"name");
   <td><%=r.getPhone() %></td><td><%=r.getPay() %></td></tr>
   <%} %>
 </table>
-<input type="button" value="홈화면으로 이동" onclick="location.href='home.jsp'">
+<input type="button" value="홈화면으로 이동" onclick="location.href='main.jsp'">
 <script type="text/javascript">
 	function goDetail(rezidS){
 		//alert(empno+" 상세화면 이동");
