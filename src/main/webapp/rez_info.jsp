@@ -2,41 +2,52 @@
     pageEncoding="UTF-8"
 import="project04.DAO"
 import="project04.vo.*"  
-import="login.jsp" 
 %>
 <%
-request.setCharacterEncoding("utf-8");
 String path = request.getContextPath();
-DAO dao = new DAO();
-String curId = null;
-if(curId==null){
-	String message="로그인을 해주세요";
-	response.sendRedirect("login.jsp?message="+message);
-}
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<link href="<%=path%>\css\rez.css" rel="stylesheet">
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="<%=path%>/css/rez_info.css" rel="stylesheet">
+<script type="text/javascript">
+</script>
 </head>
 <body>
-<h1>마이페이지</h1>
-<h2>내 예약관리</h2>
-<br>
-
-
-<table>
-	<tr>
-		<th>예약번호</th>
-		<th>프로그램</th>
-		<th>예약날짜</th>
-		<th>예약인원</th>
-		<th>예약금액</th>
-		<th>예약상태</th>
-	</tr>
+<h2>예약 정보 조회</h2>
+<h3>더블클릭시, 예약 상세 정보를 확인할 수 있습니다.</h3>
+<%
+DAO dao = new DAO();
+String name = request.getParameter("name");
+if(name==null) name="";
+session.setAttribute(name,"name");
+//if(phone==null) phone=""; // 처음에는 전체 값이 출력되게 하고, 값이 없으면 공백으로 처리함
+//if(name==null) name="";
+%>
+<div class="container">
+<table id="customers">
+  <tr>
+    <th>예약번호</th>
+    <th>예약날짜</th>
+    <th>프로그램명</th>
+    <th>이름</th>
+    <th>이메일</th>
+    <th>연락처</th>
+    <th>결제방법</th>
+  </tr>
+  <%for(Rez r:dao.getRezList3(name)){ %>
+  <tr ondblclick="goDetail(<%=r.getRezidS()%>)"><td><%=r.getRezidS()%><td><%=r.getDate()%></td><td><%=r.getPname() %></td><td><%=r.getName()%></td><td><%=r.getEmail() %></td>
+  <td><%=r.getPhone() %></td><td><%=r.getPay() %></td></tr>
+  <%} %>
 </table>
-
+<input type="button" value="홈화면으로 이동" onclick="location.href='home.jsp'">
+<script type="text/javascript">
+	function goDetail(rezidS){
+		//alert(empno+" 상세화면 이동");
+		location.href="rez_detail.jsp?rezidS="+rezidS;
+	}
+</script>
 </body>
 </html>

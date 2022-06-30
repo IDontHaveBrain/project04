@@ -87,7 +87,7 @@ CREATE TABLE ecog(
 	mm varchar2(5) CHECK(mm IN('1','2','3','4','5','6','7','8','9','10','11','12')),
 	exspace varchar2(100),
 	lcategory varchar2(50),
-	mcategory varchar2(50), 
+	mcategory varchar2(50),
 	scategory varchar2(50),
 	sname varchar2(100),
 	kname varchar2(100),
@@ -112,7 +112,7 @@ CREATE TABLE campaign(
 	edate DATE	
 );
 
-	
+
 /*
 
 간행물 테이블(게시글번호(외래키), 사용자 고유번호(외래키), 분류, 제목, 작성일, 첨부파일, 내용)
@@ -209,7 +209,7 @@ INSERT INTO photog values(brd_seq.currval,1,'플루메리아 루브라',to_date(
 
 
 
--- # 간행물 
+-- # 간행물
 
 INSERT INTO board values(brd_seq.nextval ,1,'간행물');
 
@@ -257,9 +257,9 @@ INSERT INTO board values(brd_seq.nextval ,1,'간행물');
 INSERT INTO posting values(brd_seq.currval,1,'생태연구',
 		'활동지 안내',to_date('2017-05-31','YYYY-MM-DD'),'국립생태원_고학년(초등)_리플릿.pdf','국립생태원에서는 재미와 배움이 있는 다양한 체험 거리를 통해
     생태계의 가치와 아름다움을 알 수 있도록 활동지를 개발하였습니다.');
-   
+
    INSERT INTO board values(brd_seq.nextval ,1,'간행물');
-  
+
 INSERT INTO posting values(brd_seq.currval,1,'생태연구',
 		'활동지 안내',to_date('2017-05-31','YYYY-MM-DD'),'국립생태원_고학년(초등)_리플릿.pdf','국립생태원에서는 재미와 배움이 있는 다양한 체험 거리를 통해
     생태계의 가치와 아름다움을 알 수 있도록 활동지를 개발하였습니다.');
@@ -356,7 +356,7 @@ INSERT INTO board values(brd_seq.nextval,1,'생태볼거리');
 INSERT INTO ecog values(brd_seq.currval,1,'3','에코리움(지중해관)',
 				'식물군','온실식물','지중해식물','Weeping bottlebrush',
 				'칼리스테몬 비미날리스','-',
-			'관목이나 작은 나무로 8m까지 자라지만, 야생에서는 10m까지 자란다. 나무 껍질은 어둡고 주름져 있다. 가지가 일반적으로 늘어져 있다. 
+			'관목이나 작은 나무로 8m까지 자라지만, 야생에서는 10m까지 자란다. 나무 껍질은 어둡고 주름져 있다. 가지가 일반적으로 늘어져 있다.
 ',
 	'https://www.nie.re.kr/cmmn/file/imageSrc.do?atchFileId=TBNATURE00000238&fileSn=2');
 
@@ -365,7 +365,7 @@ INSERT INTO board values(brd_seq.nextval,1,'생태볼거리');
 INSERT INTO ecog values(brd_seq.currval,1,'4','에코리움(사막관)',
 				'식물군','온실식물','사막식물','Elephant Cactus',
 				'무륜주선인장','-',
-			'얼핏 사와로 선인장(Carnegiea gigantea)과 비슷하게 생겼지만, 서리나 추운 날씨에 상대적으로 약하고 해가 진 뒤에 꽃을 피우며, 색상이 더 푸르스름하고 가지가 더 많다. 사와로 선인장보다 아래쪽에 달리는 가지가 많으며 자라는 속도도 훨씬 빠르다.  
+			'얼핏 사와로 선인장(Carnegiea gigantea)과 비슷하게 생겼지만, 서리나 추운 날씨에 상대적으로 약하고 해가 진 뒤에 꽃을 피우며, 색상이 더 푸르스름하고 가지가 더 많다. 사와로 선인장보다 아래쪽에 달리는 가지가 많으며 자라는 속도도 훨씬 빠르다.
 ',
 	'https://www.nie.re.kr/cmmn/file/imageSrc.do?atchFileId=TBNATURE00000074&fileSn=2');
 
@@ -374,7 +374,7 @@ INSERT INTO board values(brd_seq.nextval,1,'생태볼거리');
 INSERT INTO ecog values(brd_seq.currval,1,'4','에코리움(지중해관)',
 				'식물군','온실식물','지중해식물','Strelitzia reginae',
 				'극락조화','-',
-			'얼핏 사와로 선인장(Carnegiea gigantea)과 비슷하게 생겼지만, 서리나 추운 날씨에 상대적으로 약하고 해가 진 뒤에 꽃을 피우며, 색상이 더 푸르스름하고 가지가 더 많다. 사와로 선인장보다 아래쪽에 달리는 가지가 많으며 자라는 속도도 훨씬 빠르다.  
+			'얼핏 사와로 선인장(Carnegiea gigantea)과 비슷하게 생겼지만, 서리나 추운 날씨에 상대적으로 약하고 해가 진 뒤에 꽃을 피우며, 색상이 더 푸르스름하고 가지가 더 많다. 사와로 선인장보다 아래쪽에 달리는 가지가 많으며 자라는 속도도 훨씬 빠르다.
 ',
 	'https://www.nie.re.kr/cmmn/file/imageSrc.do?atchFileId=TBNATURE00000192&fileSn=2');
 
@@ -383,7 +383,7 @@ INSERT INTO board values(brd_seq.nextval,1,'생태볼거리');
 INSERT INTO ecog values(brd_seq.currval,1,'4','에코리움(열대관)',
 				'식물군','온실식물','열대식물','Scadoxus multiflorus',
 				'파이어볼릴리','-',
-			'상록수의 다년생 식물로 최대 9 개의 잎을 만들어 내며 잎 기부는 줄기처럼 보이며, 지름 25mm정도로 튼튼하고 다육질이며 보통 자주색 점이 있다. 잎은 뚜렷한 주맥이 있다. 산형화서는 최대 200개의 꽃으로 구성되며, 둥근 구형으로 지름 25cm이다.  
+			'상록수의 다년생 식물로 최대 9 개의 잎을 만들어 내며 잎 기부는 줄기처럼 보이며, 지름 25mm정도로 튼튼하고 다육질이며 보통 자주색 점이 있다. 잎은 뚜렷한 주맥이 있다. 산형화서는 최대 200개의 꽃으로 구성되며, 둥근 구형으로 지름 25cm이다.
 ',
 	'https://www.nie.re.kr/cmmn/file/imageSrc.do?atchFileId=TBNATURE00000246&fileSn=2');
 
@@ -392,7 +392,7 @@ INSERT INTO board values(brd_seq.nextval,1,'생태볼거리');
 INSERT INTO ecog values(brd_seq.currval,1,'5','야외(한반도숲)',
 				'식물군','야외식물','야외식물','Dicentra spectabilis',
 				'금낭화','-',
-			'제주도를 제외한 전역 산속, 계곡주변에 나는 여러해살이풀로 높이는 50-70cm이다. 잎은 2-3깃꼴로 갈라지는 우상복엽(깃꼴겹잎)이다.  
+			'제주도를 제외한 전역 산속, 계곡주변에 나는 여러해살이풀로 높이는 50-70cm이다. 잎은 2-3깃꼴로 갈라지는 우상복엽(깃꼴겹잎)이다.
 ',
 	'https://www.nie.re.kr/cmmn/file/imageSrc.do?atchFileId=TBNATURE00000281&fileSn=2');
 
@@ -402,7 +402,7 @@ INSERT INTO ecog values(brd_seq.currval,1,'6','야외(수생식물원)',
 				'식물군','야외식물','수생식물','Nymphoides peltata',
 				'노랑어리연','-',
 			'중부이남 습지, 연못 등 얕은 물에서 자라는 부엽식물로서 여러해살이풀이다.
-땅속줄기는 물 속 뻘에서 길게 뻗으며, 줄기는 길게 자라 여러갈래로 갈라진다.  
+땅속줄기는 물 속 뻘에서 길게 뻗으며, 줄기는 길게 자라 여러갈래로 갈라진다.
 ',
 	'https://www.nie.re.kr/cmmn/file/imageSrc.do?atchFileId=TBNATURE00000291&fileSn=2');
 
@@ -422,7 +422,7 @@ INSERT INTO campaign values(brd_seq.currval,1,'제4회 멸종위기야생생물 
 			'www.spectory.net/nie/encontest/2022/1','수상작 발표 : 3월 24일 예정 *홈페이지 게시 및 개별 통보'
 			,to_date('2022-02-03','YYYY-MM-DD'),to_date('2022-03-11','YYYY-MM-DD'));
 
-		
+
 INSERT INTO board values(brd_seq.nextval,1,'공모전캠페인');
 
 INSERT INTO campaign values(brd_seq.currval,1,'재활용품 수집노인 환경개선 아이디어 공모전',
@@ -510,10 +510,27 @@ create table Programs(
 
 INSERT INTO Programs values('개미탐험전','생태해설','단체/개인','매일',20,to_date('2022-04-26','YYYY-MM-DD'),to_date('2022-07-31','YYYY-MM-DD'),
 '10:00~10:30','에코리움 내 생태해설 Q&A','지구의 숨은 지배자, 개미');
+INSERT INTO Programs values('5대 기후대관 속 탄소중립 이야기','생태해설','단체/개인','매일',20,to_date('2022-05-20','YYYY-MM-DD'),to_date('2022-07-31','YYYY-MM-DD'),
+'11:00~12:00','에코리움 내 생태해설 Q&A','세계 여러 생태계 속 탄소중립적 요소 살펴보기');
+INSERT INTO Programs values('탄소빼기 초록더하기','생태교육','단체','월요일',1,to_date('2022-05-26','YYYY-MM-DD'),to_date('2022-07-25','YYYY-MM-DD'),
+'11:00~11:40','온라인 교육','내 생활 속 탄소빼기 생각해보고 실천해요');
+
+CREATE SEQUENCE rezid_seq
+       INCREMENT BY 1
+       START WITH 20220001
+       MINVALUE 20220001
+       MAXVALUE 99999999
+       NOCYCLE;
 
 /*예약 테이블*/
 CREATE TABLE REZ(
-	rezid NUMBER PRIMARY KEY,
-	accno NUMBER REFERENCES Account(accno),
-	pname varchar2(50) REFERENCES Programs(pname)
+	rezid NUMBER PRIMARY key,
+	rezdate varchar2(100),
+	pname varchar2(50) REFERENCES Programs(pname),
+	name varchar2(50),
+	email varchar2(100),
+	phone varchar2(100),
+	pay varchar2(50)
 );
+
+INSERT INTO rez values(rezid_seq.nextval, '2022-07-01', '개미탐험전', '홍길동','hongildong@email.com','010-1234-5678','현장결제');
