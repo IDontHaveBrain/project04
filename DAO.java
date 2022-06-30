@@ -4331,6 +4331,15 @@ public class DAO {
 					e.printStackTrace();
 				}
 			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
+		return rezList;
 	}
 }
