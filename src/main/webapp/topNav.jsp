@@ -43,7 +43,7 @@
     <li class="dropdown tright">
         <a href="javascript:void(0)" class="dropbtn tla"><%=account.getName()%></a>
         <div class="dropdown-content">
-            <a href="#logout">로그아웃</a>
+            <a href="logout.jsp">로그아웃</a>
         </div>
     </li>
     <%}%>
