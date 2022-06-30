@@ -4132,4 +4132,106 @@ public class DAO {
 		}
 		return ctgList;
 	}
+	
+	public void insertRez_2(Rez ins) {
+		try {
+			setConn();
+			con.setAutoCommit(false);
+			//rezid, rezdate, pname, name, email, phone, pay
+			String sql = "insert into rez values(rezid_seq.nextval,?,?,?,?,?,?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, ins.getDate());
+			pstmt.setString(2, ins.getPname());
+			pstmt.setString(3, ins.getName());
+			pstmt.setString(4, ins.getEmail());
+			pstmt.setString(5, ins.getPhone());
+			pstmt.setString(6, ins.getPay());
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("DB 에러: "+e.getMessage());
+			// commit 전에 예외가 발생하면 rollback 처리
+			try {
+				con.rollback();
+			}catch(Exception e1) {
+				e1.printStackTrace();
+			}
+			System.out.println("일반 예외: "+e.getMessage());
+		}finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public ArrayList<Rez> getRezList(int rezid) {
+		ArrayList<Rez> rezList = new ArrayList<Rez>();
+		try {
+			setConn();
+			String sql = "select * from rez where rezid=?";
+			System.out.println(sql);
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, rezid);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//int rezid, int accno, String pname
+				rezList.add(new Rez(
+							rs.getInt("rezid"),
+							rs.getString("rezdate"),
+							rs.getString("pname"),
+							rs.getString("name"),
+							rs.getString("email"),
+							rs.getString("phone"),
+							rs.getString("pay")
+							));
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : "+e.getMessage());
+		} catch ( Exception e ) {
+			System.out.println("일반 예외 : "+e.getMessage());
+		} finally {
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return rezList;
+	}
 }
