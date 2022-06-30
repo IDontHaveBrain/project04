@@ -71,7 +71,7 @@ session.setAttribute("ptime",ptime);
   </table>
   <%} %>
   <input type="button" class="button" value="목록" onclick="location.href='program_info.jsp'">
-  <input type="button" class="button" value="예약하기" onclick="location.href='rez_in_3.jsp?pname=<%=pname%>&span1=<%=span1%>&span2=<%=span2%>&ptime=<%=ptime%>'" style="float: right;">
+  <input type="button" class="button" value="예약하기" onclick="location.href='rez_in.jsp?pname=<%=pname%>&span1=<%=span1%>&span2=<%=span2%>&ptime=<%=ptime%>'" style="float: right;">
 </div>
 
 </body>

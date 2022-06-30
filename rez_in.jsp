@@ -76,7 +76,7 @@ if(name!=null && !name.trim().equals("")){
   </div>
   <div class="row">
     <div class="col-25">
-      <input type="hidden" name="pname" value="<%=pname%>">프로그램명: <%=pname %>시간: <%=ptime %>
+      <input type="hidden" name="pname" value="<%=pname%>">프로그램명: <%=pname %>
     </div>
     <div class="col-25">
       <input type="hidden" name="ptime" value="<%=ptime%>">시간: <%=ptime %>
