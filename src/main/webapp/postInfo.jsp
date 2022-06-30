@@ -75,7 +75,7 @@ String path = request.getContextPath();
 			<li class="info_head">작성일</li>
 			<li class="info_data"><%=p.getUploaddate() %></li>
 			<li class="info_head">작성자</li>
-			<li class="info_data">@@@</li>
+			<li class="info_data"><%=dao.getAccountNo(p.getAccno()).getName() %></li>
 			<li class="info_head">첨부파일</li>
 			<li class="info_data" style="cursor:pointer;" onclick="download()"><%=p.getPfile() %></li>
 		</ul>
