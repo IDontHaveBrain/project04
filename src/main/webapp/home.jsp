@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
-<h2>홈화면</h2>
+<video autoplay loop muted preload="auto">
+    <source src="https://www.nie.re.kr/resources/nie/video/mainVideo.mp4" type="video/mp4">
+</video>
 </body>
 </html>
